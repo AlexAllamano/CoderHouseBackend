@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Titulo 1",
+    "description": "Descripcion 1",
+    "price": 10,
+    "thumbnail": "IMG 1",
+    "code": 1,
+    "stock": 10,
+    "id": 1
+  },
+  {
+    "title": "Titulo 2",
+    "description": "Descripcion 2",
+    "price": 20,
+    "thumbnail": "IMG 2",
+    "code": 2,
+    "stock": 20,
+    "id": 2
+  },
+  {
+    "title": "Titulo 3",
+    "description": "Descripcion 3",
+    "price": 30,
+    "thumbnail": "IMG 3",
+    "code": 3,
+    "stock": 30,
+    "id": 3
+  },
+  {
+    "title": "Titulo 4",
+    "description": "Descripcion 4",
+    "price": 40,
+    "thumbnail": "IMG 4",
+    "code": 4,
+    "stock": 40,
+    "id": 4
+  },
+  {
+    "title": "Titulo 5",
+    "description": "Descripcion 5",
+    "price": 50,
+    "thumbnail": "IMG 5",
+    "code": 5,
+    "stock": 50,
+    "id": 5
+  },
+  {
+    "title": "Titulo 6",
+    "description": "Descripcion 6",
+    "price": 60,
+    "thumbnail": "IMG 6",
+    "code": 6,
+    "stock": 60,
+    "id": 6
+  },
+  {
+    "title": "Titulo 7",
+    "description": "Descripcion 7",
+    "price": 70,
+    "thumbnail": "IMG 7",
+    "code": 7,
+    "stock": 70,
+    "id": 7
+  },
+  {
+    "title": "Titulo 8",
+    "description": "Descripcion 8",
+    "price": 80,
+    "thumbnail": "IMG 8",
+    "code": 8,
+    "stock": 80,
+    "id": 8
+  },
+  {
+    "title": "Titulo 9",
+    "description": "Descripcion 9",
+    "price": 90,
+    "thumbnail": "IMG 9",
+    "code": 9,
+    "stock": 90,
+    "id": 9
+  },
+  {
+    "title": "Titulo 10",
+    "description": "Descripcion 10",
+    "price": 100,
+    "thumbnail": "IMG 10",
+    "code": 10,
+    "stock": 100,
+    "id": 10
+  }
+]
