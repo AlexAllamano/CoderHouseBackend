@@ -1,18 +1,14 @@
-const fs = require("fs");
+import fs from "fs";
 
-class ProductManager {
+export default class ProductManager {
   constructor(path) {
     try {
       this.arreglo = [];
       this.path = path;
       if (!fs.existsSync(path)) {
-        this.escribirJson().then(() => {
-          console.log("Archivo Creado", this.arreglo);
-        });
+        this.escribirJson().then(() => {});
       } else {
-        this.leerArchivo().then(() => {
-          console.log(this.arreglo);
-        });
+        this.leerArchivo().then(() => {});
       }
     } catch (e) {
       console.log(e);
@@ -27,10 +23,17 @@ class ProductManager {
     await fs.promises.writeFile(this.path, JSON.stringify(this.arreglo));
   };
 
-  addProducts = async (title, description, price, thumbnail, code, stock) => {
+  addProducts = async (
+    title,
+    description,
+    price,
+    thumbnail,
+    code,
+    stock,
+    status = true
+  ) => {
     try {
-      if (!title || !description || !price || !thumbnail || !code || !stock) {
-        console.log("Debe ingresar todos los parámetros");
+      if (!title || !description || !price || !code || !stock) {
         return;
       }
 
@@ -41,13 +44,13 @@ class ProductManager {
         thumbnail: thumbnail,
         code: code,
         stock: parseInt(stock),
+        status: true,
       };
 
       let existe = false;
 
       this.arreglo.forEach((pro) => {
         if (pro.code === producto.code) {
-          console.log("El code ya está registrado");
           existe = true;
         }
       });
@@ -63,6 +66,7 @@ class ProductManager {
 
         this.arreglo.push(producto);
         await this.escribirJson();
+        return { Mensaje: "Producto agregado", Producto: producto };
       }
     } catch (e) {
       console.log(e);
@@ -74,18 +78,15 @@ class ProductManager {
       await this.leerArchivo();
 
       if (isNaN(parseInt(limite))) {
-        console.log('Ingrese un número válido');
-        return "Ingrese un número válido";
-      } else if (parseInt(limite) > this.arreglo.length || parseInt(limite) === 0) {
-        console.log(this.arreglo);
-
-        return this.arreglo;
+        return { Error: "Ingrese un número válido" };
+      } else if (
+        parseInt(limite) > this.arreglo.length ||
+        parseInt(limite) === 0
+      ) {
+        return { ListaDeProductos: this.arreglo };
       } else {
-        console.log(this.arreglo);
-
         return this.arreglo.splice(0, limite);
       }
-
     } catch (e) {
       console.log(e);
     }
@@ -96,10 +97,8 @@ class ProductManager {
       await this.leerArchivo();
       if (this.existeId(id)) {
         return this.arreglo.filter((pro) => pro.id === id);
-      }else{
-        return({
-          Error: 'El ID ingresado no existe o no es válido'
-        })
+      } else {
+        return undefined;
       }
     } catch (e) {
       console.log(e);
@@ -109,10 +108,11 @@ class ProductManager {
   deleteProduct = async (id = "") => {
     try {
       if (this.existeId(id)) {
-        this.arreglo = this.arreglo.filter((pro) => pro.id != id);
+        this.arreglo = this.arreglo.filter((pro) => pro.id !== id);
         await this.escribirJson();
-
-        console.log(this.arreglo);
+        return { Mensaje: "Producto borrado" };
+      } else {
+        return { Error: "Producto no encontrado" };
       }
     } catch (e) {
       console.log(e);
@@ -121,13 +121,15 @@ class ProductManager {
 
   updateProduct = async (id, nuevoProducto) => {
     try {
+
+
       if (this.existeId(id)) {
         if (typeof nuevoProducto != "object") {
-          console.log("ingrese un producto en forma de objeto");
           return;
         }
 
-        let producto = this.arreglo.filter((pro) => pro.id === id);
+        let producto = this.arreglo.filter((pro) => pro.id.toString() === id.toString());
+        console.log(producto, 'PRODUCTO')
 
         this.arreglo[this.arreglo.indexOf(producto[0])] = {
           title: nuevoProducto.title ?? producto[0].title,
@@ -136,10 +138,14 @@ class ProductManager {
           thumbnail: nuevoProducto.thumbnail ?? producto[0].thumbnail,
           code: nuevoProducto.code ?? producto[0].code,
           stock: nuevoProducto.stock ?? producto[0].stock,
+          status: nuevoProducto.status ?? producto[0].status,
           id: id,
         };
 
         await this.escribirJson();
+        return { Mensaje: "Producto actualizado" };
+      } else {
+        return { Error: "Producto no encontrado" };
       }
     } catch (e) {
       console.log(e);
@@ -148,27 +154,22 @@ class ProductManager {
 
   existeId = (id) => {
     if (id === "") {
-      console.log("Ingrese un ID");
       return false;
     }
 
     id = parseInt(id);
     if (isNaN(id)) {
-      console.log("Ingrese ID válido");
       return false;
     }
 
-    let producto = this.arreglo.filter((pro) => pro.id === id);
+    let producto = this.arreglo.filter(
+      (pro) => pro.id.toString() === id.toString()
+    );
 
     if (producto[0] === undefined) {
-      console.log("Not found");
       return false;
     } else {
       return true;
     }
   };
 }
-
-
-
-module.exports.ProductManager = ProductManager;
