@@ -18,27 +18,24 @@ route.get("/:pid", async (req, res) => {
 route.post("", async (req, res) => {
   const producto = req.body;
   const products = await productManager.getProducts();
-
-  socketServer.emit("mensajePost", products);
-  
-
-  res.send(
-    await productManager.addProducts(
-      producto.title,
-      producto.description,
-      producto.price,
-      producto.thumbnail,
-      producto.code,
-      producto.stock,
-      producto.status
-    )
+  await productManager.addProducts(
+    producto.title,
+    producto.description,
+    producto.price,
+    producto.thumbnail,
+    producto.code,
+    producto.stock,
+    producto.status
   );
+  socketServer.emit("mensajePost", products);
+
+  res.send();
 });
 
 route.delete("/:pid", async (req, res) => {
-  await productManager.deleteProduct(parseInt(req.params.pid))
+  await productManager.deleteProduct(parseInt(req.params.pid));
   const products = await productManager.getProducts();
-  socketServer.emit('mensajeDelete', products);
+  socketServer.emit("mensajeDelete", products);
   res.send();
 });
 
