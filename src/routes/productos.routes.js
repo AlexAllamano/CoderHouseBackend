@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ProductManager from "./../manager/ProductoManager.js";
+import { socketServer } from "../socket/configure-socket.js";
 let productManager = new ProductManager("src/database/productos.json");
 
 const route = Router();
@@ -16,6 +17,10 @@ route.get("/:pid", async (req, res) => {
 
 route.post("", async (req, res) => {
   const producto = req.body;
+  const products = await productManager.getProducts();
+
+  socketServer.emit("mensajePost", products);
+  
 
   res.send(
     await productManager.addProducts(
@@ -30,15 +35,16 @@ route.post("", async (req, res) => {
   );
 });
 
-route.delete("/:pid", async(req, res) =>{
-    res.send(await productManager.deleteProduct(parseInt(req.params.pid)));
-})
+route.delete("/:pid", async (req, res) => {
+  await productManager.deleteProduct(parseInt(req.params.pid))
+  const products = await productManager.getProducts();
+  socketServer.emit('mensajeDelete', products);
+  res.send();
+});
 
-route.put("/:pid", async(req, res)=>{
+route.put("/:pid", async (req, res) => {
   const producto = req.body;
 
-  res.send(
-    await productManager.updateProduct(req.params.pid, producto)
-  );
-})
+  res.send(await productManager.updateProduct(req.params.pid, producto));
+});
 export default route;

@@ -83,7 +83,7 @@ export default class ProductManager {
         parseInt(limite) > this.arreglo.length ||
         parseInt(limite) === 0
       ) {
-        return { ListaDeProductos: this.arreglo };
+        return  this.arreglo ;
       } else {
         return this.arreglo.splice(0, limite);
       }

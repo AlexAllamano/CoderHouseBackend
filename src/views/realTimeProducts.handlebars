@@ -1,0 +1,142 @@
+<div class="container pb-5 pt-5">
+
+  <div>
+    <h1 class="text-center">RealTimeProducts</h1>
+  </div>
+
+  <div class="container mt-4">
+    <table class="table" id="tablaProductos">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Titulo</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Código</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each products}}
+          <tr>
+            <th scope="row">{{this.id}}</th>
+            <td>{{this.title}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.code}}</td>
+            <td>{{this.stock}}</td>
+            <td>{{this.status}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-5">
+
+    <h2 class="mb-4">Cargar producto</h2>
+    <form action="">
+      <div class="row mt-2 mb-2">
+        <div class="col">
+          <input
+            id="titulo"
+            type="text"
+            class="form-control"
+            placeholder="Titulo"
+            aria-label="titulo"
+          />
+        </div>
+        <div class="col">
+          <input
+            id="descripcion"
+            type="text"
+            class="form-control"
+            placeholder="Descripción"
+            aria-label="descripcion"
+          />
+        </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col">
+          <input
+            id="precio"
+            type="number"
+            class="form-control"
+            placeholder="Precio"
+            aria-label="precio"
+          />
+        </div>
+        <div class="col">
+          <input
+            id="codigo"
+            type="text"
+            class="form-control"
+            placeholder="Código"
+            aria-label="codigo"
+          />
+        </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col">
+          <input
+            id="stock"
+            type="number"
+            class="form-control"
+            placeholder="Stock"
+            aria-label="stock"
+          />
+        </div>
+        <div class="col">
+          <div class="form-check form-switch">
+            <label
+              class="form-check-label"
+              for="flexSwitchCheckDefault"
+            >Estado</label>
+
+            <input
+              id="estado"
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+            />
+
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        onclick="postProduct()"
+        class="btn btn-primary"
+      >Agregar</button>
+    </form>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4">Borrar producto</h2>
+    <form action="">
+      <div class="row mt-2 mb-2">
+        <div class="col">
+          <input
+            id="id"
+            type="number"
+            class="form-control"
+            placeholder="Id"
+            aria-label="id"
+          />
+        </div>
+
+      </div>
+      <button
+        type="button"
+        onclick="deleteProduct()"
+        class="btn btn-danger"
+      >Borrar</button>
+    </form>
+  </div>
+
+  
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="static/js/realTimeProducts.js"></script>
