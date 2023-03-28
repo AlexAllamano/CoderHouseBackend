@@ -1,3 +1,5 @@
+
+
 const socket = io();
 socket.emit("nuevaConexion", "Conexión establecida");
 
@@ -15,7 +17,7 @@ postProduct = () => {
   event.preventDefault(true);
 
   let objeto = {
-    title: document.getElementById("titulo").value,
+    tittle: document.getElementById("titulo").value,
     description: document.getElementById("descripcion").value,
     price: document.getElementById("precio").value,
     stock: document.getElementById("stock").value,
@@ -43,9 +45,10 @@ deleteProduct = () => {
   });
 };
 
-saludar = () => {};
-
 actualizarTabla = (data) => {
+
+  console.log(data)
+
   const tbody = document.querySelector("#tablaProductos tbody");
 
   tbody.innerHTML = "";
@@ -53,10 +56,11 @@ actualizarTabla = (data) => {
   data.forEach((item) => {
     let tr = document.createElement("tr");
     let td = document.createElement("td");
-    td.innerHTML = item.id;
+    td.setAttribute('scope', 'row');
+    td.innerHTML = item._id;
     tr.appendChild(td);
     td = document.createElement("td");
-    td.innerHTML = item.title;
+    td.innerHTML = item.tittle;
     tr.appendChild(td);
     td = document.createElement("td");
     td.innerHTML = item.description;
