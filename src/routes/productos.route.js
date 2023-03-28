@@ -28,8 +28,8 @@ route.post("", async (req, res, next) => {
   try {
     const producto = req.body;
     let newPorducto = await manager.save(producto);
-    console.log('HOLLLAAAAAA')
-    socketServer.emit("mensajePost", producto);
+    const productos = await manager.getAll();
+    socketServer.emit("mensajePost", productos);
     res.status(200).send({ producto: newPorducto });
   } catch (e) {
     next(e);
