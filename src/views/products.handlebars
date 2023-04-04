@@ -1,0 +1,87 @@
+<div class="container pb-5 pt-5">
+
+  <div>
+    <h1 class="text-center">{{title}} </h1>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <div class="d-flex flex-column text-center">
+      <label for="limite">Cantidad por página</label><input
+        type="number"
+        class="form-class"
+        id="limite"
+      />
+    </div>
+    <div class="d-flex flex-column text-center">
+      <label for="pagina">Pagina inicial</label><input
+        type="number"
+        class="form-class"
+        id="pagina"
+      />
+    </div>
+    <div class="d-flex flex-column text-center">
+      <label for="sort">Orden asc/desc</label>
+      <select name="sort" id="sort">
+        <option value="1">Ascendente</option>
+        <option value="-1">Descendente</option>
+      </select>
+    </div>
+    <div class="d-flex flex-column text-center">
+      <label for="descrpcion">Filtro por descripción</label><input
+        type="text"
+        class="form-class"
+        id="descrpcion"
+      />
+    </div>
+    <button onclick="filtrar()" class="btn btn-primary">Filtrar</button>
+  </div>
+
+  <table class="table table-hover mt-5">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Titulo</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Código</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+        <tr>
+          <th scope="row">{{this._id}}</th>
+          <td>{{this.tittle}}</td>
+          <td>{{this.description}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.code}}</td>
+          <td>{{this.stock}}</td>
+          <td>{{this.status}}</td>
+          <td><button class="btn btn-primary">Agregar</button></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {{#if tienePrev}}
+        <li class="page-item"><button onclick="setPrev()" class="page-link" href="#">Anterior</button></li>
+        {{else}}
+        <li class="page-item disabled"><button class="page-link" href="#">Anterior</button></li>
+        {{/if}}
+
+        <li class="page-item"><a class="page-link" href="#">{{pagina}}</a></li>
+
+        {{#if tieneNext}}
+        <li class="page-item"><button onclick="setNext()" class="page-link" href="#">Siguiente</button></li>
+        {{else}}
+        <li class="page-item disabled"><button class="page-link" href="#">Siguiente</button></li>
+        {{/if}}
+      </ul>
+    </nav>
+  </div>
+</div>
+<script src="static/js/products.js"></script>

@@ -13,8 +13,16 @@ class CartManager{
         return await this.#persistencia.getAll();
     }
 
-    async save(producto){
-        return await this.#persistencia.create(producto);
+    async getById(cid){
+        return await this.#persistencia.findOneCart(cid);
+    }
+
+    async save(productos){
+        return await this.#persistencia.create(productos);
+    }
+
+    async updateOne(cid, carrito){
+        return await this.#persistencia.updateOne(cid, carrito);
     }
 }
 
