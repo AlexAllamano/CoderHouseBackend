@@ -1,6 +1,7 @@
 import { Router } from "express";
 import productoManager from "../dao/productos.manager.js";
 import carritoManager from "../dao/carts.manager.js";
+import { userModel } from "../models/usuario.model.js";
 
 const route = Router();
 
@@ -8,6 +9,12 @@ route.get("/", async (req, res) => {
   const products = await productoManager.getAll();
 
   res.render("home", { title: "Home", products });
+});
+
+route.get("/registro", async (req, res) => {
+  const products = await productoManager.getAll();
+
+  res.render("registro", { title: "Registro", products });
 });
 
 route.get("/realtimeproducts", async (req, res) => {
@@ -18,6 +25,22 @@ route.get("/realtimeproducts", async (req, res) => {
 
 route.get("/products", async (req, res) => {
   const query = req.query;
+  const correo = req.session.correo;
+  let usuario;
+
+  if (correo == "adminCoder@coder.com") {
+    usuario = {
+      nombre: "Usuario",
+      apellido: "Coder",
+      correo: "adminCoder@coder.com",
+      edad: 100,
+      password: "adminCod3r123",
+      rol: "Admin",
+    };
+  } else {
+    usuario = await userModel.findOne({ correo });
+    usuario.rol = "usuario";
+  }
 
   const products = await productoManager.getAll(
     query.limite,
@@ -26,7 +49,7 @@ route.get("/products", async (req, res) => {
     query.query
   );
 
-  if (query.page > products.totalPages || query.page <= 0 ) {
+  if (query.page > products.totalPages || query.page <= 0) {
     res.render("noEncontrado", {
       title: "Página no encontrada",
       mensaje: `La página ingresada no existe para el límite asignado`,
@@ -46,6 +69,9 @@ route.get("/products", async (req, res) => {
       tieneNext: products.hasNextPage,
       prev: products.prevPage,
       next: products.nextPage,
+      nombreUsuario: usuario.nombre,
+      apellidoUsuario: usuario.apellido,
+      rolUsuario: usuario.rol,
     });
   }
 });

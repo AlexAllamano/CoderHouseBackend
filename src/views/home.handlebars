@@ -1,37 +1,42 @@
 <div class="container pb-5 pt-5">
 
   <div>
-    <h1 class="text-center">Home </h1>
+    <h1 class="text-center">Login</h1>
   </div>
 
   <div class="container mt-4">
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">Id</th>
-          <th scope="col">Titulo</th>
-          <th scope="col">Descripción</th>
-          <th scope="col">Precio</th>
-          <th scope="col">Código</th>
-          <th scope="col">Stock</th>
-          <th scope="col">Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each products}}
-          <tr>
-            <th scope="row">{{this._id}}</th>
-            <td>{{this.tittle}}</td>
-            <td>{{this.description}}</td>
-            <td>{{this.price}}</td>
-            <td>{{this.code}}</td>
-            <td>{{this.stock}}</td>
-            <td>{{this.status}}</td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
+    <form action="">
+
+      <input
+        id="correo"
+        type="text"
+        class="form-control mt-2 mb-3"
+        placeholder="Correo"
+        aria-label="correo"
+      />
+
+      <input
+        id="password"
+        type="password"
+        class="form-control mt-2 mb-3"
+        placeholder="Password"
+        aria-label="password"
+      />
+
+      <div class="d-flex justify-content-center">
+        <button
+          type="button"
+          onclick="login(event)"
+          class="btn btn-primary"
+        >Iniciar sesión</button>
+
+        <a      
+        href="http://localhost:8080/registro" 
+          class="btn btn-primary ms-2"
+        >Registrarse</a>
+      </div>
+    </form>
   </div>
 </div>
 
-<script src="static/js/script.js"></script>
+<script src="static/js/home.js"></script>

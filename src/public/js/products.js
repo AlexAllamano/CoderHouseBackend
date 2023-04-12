@@ -38,3 +38,8 @@ filtrar = () => {
 
   console.log(sort);
 };
+
+function logout(event){
+  event.preventDefault();
+  
+}
