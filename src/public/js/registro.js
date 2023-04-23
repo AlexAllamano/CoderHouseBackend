@@ -8,7 +8,7 @@ async function registrar(event) {
   const password = document.getElementById("password").value;
 
   const response = api
-    .post("/api/usuarios", {
+    .post("/api/auth/register", {
       nombre,
       apellido,
       correo,

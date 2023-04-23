@@ -12,10 +12,13 @@ import config from "./data.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import { configurePassport } from "./config/passport.config.js";
+import passport from "passport";
 
 const { __dirname } = fileDirName(import.meta);
 const app = express();
 const { PORT, MONGO_URL } = config;
+
 
 // MIDDLEWARES
 
@@ -32,6 +35,10 @@ app.use(
     saveUninitialized: true,
   })
 );
+configurePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

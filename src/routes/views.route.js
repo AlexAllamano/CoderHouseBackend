@@ -27,6 +27,7 @@ route.get("/products", async (req, res) => {
   const query = req.query;
   const correo = req.session.correo;
   let usuario;
+  console.log(correo)
 
   if (correo == "adminCoder@coder.com") {
     usuario = {
