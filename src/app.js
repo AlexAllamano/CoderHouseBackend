@@ -14,6 +14,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import { configurePassport } from "./config/passport.config.js";
 import passport from "passport";
+import jwtrouter from './routes/jwt.router.js'
 
 const { __dirname } = fileDirName(import.meta);
 const app = express();
@@ -63,6 +64,7 @@ app.use("/api/product", productoRoute);
 app.use("/api/usuarios", usuarioRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/cart", cartRoute);
+app.use("/api/jwt", jwtrouter);
 
 app.get("/setCookie", (req, res) => {
   res

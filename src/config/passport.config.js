@@ -3,11 +3,13 @@ import local from "passport-local";
 import { userModel } from "../models/usuario.model.js";
 import { createHash, isValidPassword } from "../utils/crypto.js";
 import github from "passport-github2";
+import jwt from "passport-jwt";
 import data from "../data.js";
 import { compareSync } from "bcrypt";
 
 const LocalStrategy = local.Strategy;
 const GitHubStrategy = github.Strategy;
+const JWTStrategy = jwt.Strategy;
 
 export function configurePassport() {
   passport.use(
@@ -33,7 +35,7 @@ export function configurePassport() {
             password: createHash(password),
           });
 
-          console.log(newUser, "nuevo usuario creado con contraseña hasheada")
+          console.log(newUser, "nuevo usuario creado con contraseña hasheada");
           return done(null, newUser);
         } catch (e) {
           done(e);
@@ -77,7 +79,7 @@ export function configurePassport() {
       async (accessToken, refreshToken, profile, done) => {
         try {
           const correo = profile._json.email;
-          console.log(profile)
+          console.log(profile);
           const user = await userModel.findOne({ correo });
           console.log(user);
           if (!user) {
@@ -99,9 +101,32 @@ export function configurePassport() {
     )
   );
 
+  passport.use(
+    "jwt",
+    new JWTStrategy({
+      jwtFromRequest: jwt.ExtractJwt.fromExtractors([
+        jwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
+        cookieExtractor,
+      ]),
+      secretOrKey: 'CODER_SUPER_SECRETO'
+    },
+    (payload, done) =>{
+  try {
+    console.log(payload);
+    done(null, payload)
+  } catch (error) {
+    done(error, false, {message: 'usuario no creado'});
+  }      
+    })
+  );
+
   passport.serializeUser((user, done) => done(null, user._id));
   passport.deserializeUser(async (id, done) => {
     const user = await userModel.findOne({ _id: id });
     done(null, user);
   });
+}
+
+function cookieExtractor(req) {
+  return req?.cookies?.["AUTH"];
 }
