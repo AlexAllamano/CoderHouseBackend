@@ -1,68 +1,81 @@
-import { Router } from "express";
 import { userModel } from "../models/usuario.model.js";
 import { createHash, isValidPassword } from "../utils/crypto.js";
 import passport from "passport";
+import { Router } from "../classes/server/router.js";
 
-const route = Router();
-
-route.post(
-  "/login",
-  passport.authenticate("login", { failureRedirect: "/api/auth/loginfallido" }),
-  async (req, res) => {
-    req.session.correo = req.user.correo;
-
-    res.redirect("/products");
+class AuthRouter extends Router {
+  constructor() {
+    super("/auth");
   }
-);
+  init() {
+    this.post(
+      "/login",
+      passport.authenticate("login", {
+        failureRedirect: "/api/auth/loginfallido",
+      }),
+      async (req, res) => {
+        req.session.correo = req.user.correo;
 
-route.post(
-  "/register",
-  passport.authenticate("register", {
-    failureRedirect: "/api/auth/registrofallido",
-  }),
-  async (req, res) => {
-    res.status(201).send({ message: "Usuario registrado" });
-  }
-);
-
-route.get("/registrofallido", (req, res) => {
-  res.send({ error: "Error en el registro" });
-});
-
-route.get("/loginfallido", (req, res) => {
-  res.send({ error: "Error en el login: usuario o contraseña incorrecta" });
-});
-
-route.post("/password-olvidada", async (req, res) => {
-  try {
-    const { correo, password } = req.body;
-    const usuario = await userModel.findOne({ correo });
-    const hashedPassword = createHash(password);
-    if (!usuario) {
-      res.status(404).send({ mensaje: "usuario no encontrado" });
-      return;
-    }
-    await userModel.updateOne(
-      { correo },
-      { $set: { password: hashedPassword } }
+        res.redirect("/products");
+      }
     );
-    res.send({ mensjae: "Constraseña modificada" });
-  } catch (e) {}
-});
 
-route.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"] }),
-  async (req, res) => {}
-);
+    this.post(
+      "/register",
+      ["PUBLIC"],
+      passport.authenticate("register", {
+        failureRedirect: "/api/auth/registrofallido",
+      }),
+      async (req, res) => {
+        res.status(201).send({ message: "Usuario registrado" });
+      }
+    );
 
-route.get(
-  "/github-callback",
-  passport.authenticate("github", { failureRedirect: "/" }),
-  (req, res) => {
-    console.log(req.user);
-    req.session.correo = req.user.correo;
-    res.redirect("/products");
+    this.get("/registrofallido", ["PUBLIC"], (req, res) => {
+      res.send({ error: "Error en el registro" });
+    });
+
+    this.get("/loginfallido", ["PUBLIC"], (req, res) => {
+      res.send({ error: "Error en el login: usuario o contraseña incorrecta" });
+    });
+
+    this.post("/password-olvidada", ["PUBLIC"], async (req, res) => {
+      try {
+        const { correo, password } = req.body;
+        const usuario = await userModel.findOne({ correo });
+        const hashedPassword = createHash(password);
+        if (!usuario) {
+          res.status(404).send({ mensaje: "usuario no encontrado" });
+          return;
+        }
+        await userModel.updateOne(
+          { correo },
+          { $set: { password: hashedPassword } }
+        );
+        res.send({ mensjae: "Constraseña modificada" });
+      } catch (e) {}
+    });
+
+    this.get(
+      "/github",
+      ["PUBLIC"],
+      passport.authenticate("github", { scope: ["user:email"] }),
+      async (req, res) => {}
+    );
+
+    this.get(
+      "/github-callback",
+      ["PUBLIC"],
+      passport.authenticate("github", { failureRedirect: "/" }),
+      (req, res) => {
+        console.log(req.user);
+        req.session.correo = req.user.correo;
+        res.redirect("/products");
+      }
+    );
   }
-);
-export default route;
+}
+
+const router = new AuthRouter();
+
+export default router;

@@ -1,10 +1,6 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import productoRoute from "./routes/productos.route.js";
-import cartRoute from "./routes/carts.route.js";
-import usuarioRoute from "./routes/usuarios.router.js";
-import authRoute from "./routes/auth.router.js";
-import viewsRoute from "./routes/views.route.js";
+import route from './routes/index.js'
 import fileDirName from "./utils/fileDirName.js";
 import configureSocket from "./socket/configure-socket.js";
 import mongoose from "mongoose";
@@ -14,7 +10,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import { configurePassport } from "./config/passport.config.js";
 import passport from "passport";
-import jwtrouter from './routes/jwt.router.js'
+
 
 const { __dirname } = fileDirName(import.meta);
 const app = express();
@@ -59,12 +55,8 @@ app.use("/static", express.static(__dirname + "/public"));
 
 // ROUTES
 
-app.use("/", viewsRoute);
-app.use("/api/product", productoRoute);
-app.use("/api/usuarios", usuarioRoute);
-app.use("/api/auth", authRoute);
-app.use("/api/cart", cartRoute);
-app.use("/api/jwt", jwtrouter);
+app.use("/api", route);
+
 
 app.get("/setCookie", (req, res) => {
   res
