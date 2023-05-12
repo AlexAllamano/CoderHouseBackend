@@ -137,5 +137,7 @@ app.use((error, req, res, next) => {
       message: error.mesagge,
     });
   }
-  res.status(500).send({ error });
+
+  console.log('Ocurrio un error', error)
+  res.status(500).send({ error: error });
 });

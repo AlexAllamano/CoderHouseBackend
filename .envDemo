@@ -2,4 +2,5 @@ PORT=
 MONGO_URL= 
 github_client_id= 
 github_secret= 
-github_callbacckUrl
+github_callbacckUrl=
+SECRET=

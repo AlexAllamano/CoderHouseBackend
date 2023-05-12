@@ -3,14 +3,6 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 const productoCollection = "productos";
 
-// producto.title,
-// producto.description,
-// producto.price,
-// producto.thumbnail,
-// producto.code,
-// producto.stock,
-// producto.status
-
 const productoSchema = new mongoose.Schema({
   tittle: {
     type: String,

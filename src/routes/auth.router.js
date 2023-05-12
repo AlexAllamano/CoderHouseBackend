@@ -1,4 +1,4 @@
-import { userModel } from "../models/usuario.model.js";
+import  userModel  from "../models/usuario.model.js";
 import { createHash, isValidPassword } from "../utils/crypto.js";
 import passport from "passport";
 import { Router } from "../classes/server/router.js";
@@ -8,25 +8,14 @@ class AuthRouter extends Router {
     super("/auth");
   }
   init() {
-    this.post(
-      "/login",
-      passport.authenticate("login", {
-        failureRedirect: "/api/auth/loginfallido",
-      }),
-      async (req, res) => {
+    this.post("/login",passport.authenticate("login", {failureRedirect: "/api/auth/loginfallido",}),async (req, res) => {
         req.session.correo = req.user.correo;
 
         res.redirect("/products");
       }
     );
 
-    this.post(
-      "/register",
-      ["PUBLIC"],
-      passport.authenticate("register", {
-        failureRedirect: "/api/auth/registrofallido",
-      }),
-      async (req, res) => {
+    this.post("/register",["PUBLIC"],passport.authenticate("register", {failureRedirect: "/api/auth/registrofallido",}),async (req, res) => {
         res.status(201).send({ message: "Usuario registrado" });
       }
     );
@@ -56,18 +45,10 @@ class AuthRouter extends Router {
       } catch (e) {}
     });
 
-    this.get(
-      "/github",
-      ["PUBLIC"],
-      passport.authenticate("github", { scope: ["user:email"] }),
-      async (req, res) => {}
+    this.get("/github",["PUBLIC"],passport.authenticate("github", { scope: ["user:email"] }),async (req, res) => {}
     );
 
-    this.get(
-      "/github-callback",
-      ["PUBLIC"],
-      passport.authenticate("github", { failureRedirect: "/" }),
-      (req, res) => {
+    this.get("/github-callback",["PUBLIC"],passport.authenticate("github", { failureRedirect: "/" }),(req, res) => {
         console.log(req.user);
         req.session.correo = req.user.correo;
         res.redirect("/products");
