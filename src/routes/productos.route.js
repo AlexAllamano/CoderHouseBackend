@@ -6,11 +6,11 @@ class ProductRouter extends Router {
     super("/product");
   }
   init() {
-    this.get("", ["PUBLIC"], productoController.getAllProducts);
-    this.get("/:pid", ["PUBLIC"], productoController.getPorductById);
-    this.post("", ["PUBLIC"], productoController.postProducto);
-    this.delete("/:pid", ["PUBLIC"], productoController.borrarProducto);
-    this.put("/:pid", ["PUBLIC"], productoController.alterProducto);
+    this.get("", ["PUBLIC"], productoController.getAllProducts.bind(productoController));
+    this.get("/:pid", ["PUBLIC"], productoController.getPorductById.bind(productoController));
+    this.post("", ["ADMIN"], productoController.postProducto.bind(productoController));
+    this.delete("/:pid", ["PUBLIC"], productoController.borrarProducto.bind(productoController));
+    this.put("/:pid", ["PUBLIC"], productoController.alterProducto.bind(productoController));
   }
 }
 

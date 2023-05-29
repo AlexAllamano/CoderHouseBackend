@@ -1,13 +1,28 @@
-import carritoModel from "../models/cart.model.js";
-import productoModel from "../models/producto.model.js";
+import CarritoService from "../services/cart.services.js";
+import ProductoService from "../services/product.services.js";
+import TicketService from "../services/tickets.services.js";
+import UsuarioService from "../services/usuarios.services.js";
 
 class CartController {
+  #carritoService;
+  #productoService;
+  #usuarioService;
+  #ticketService;
+  constructor(service, service2, service3, service4) {
+    this.#carritoService = service;
+    this.#productoService = service2;
+    this.#usuarioService = service3;
+    this.#ticketService = service4;
+  }
+
   //obtiene el carrito con el ID facilitad
   async getCartByID(req, res, next) {
     try {
       let cid = req.params.cid;
 
-      res.status(200).send({ carrito: await carritoModel.findById(cid) });
+      res
+        .status(200)
+        .send({ carrito: await this.#carritoService.findById(cid) });
     } catch (e) {
       next(e);
     }
@@ -16,8 +31,8 @@ class CartController {
   //agregar un carrito con productos vacios
   async createEmpityCart(req, res, next) {
     try {
-      const newCart = await carritoModel.create();
-      console.log(newCart, "NUEVO");
+      const newCart = await this.#carritoService.create();
+      
 
       if (!newCart) {
         throw new Error("Error al crear el carrito");
@@ -39,11 +54,8 @@ class CartController {
       const pid = req.params.pid;
 
       //busco producto y carrito por id
-      const producto = await productoModel.findById(pid);
-      let carrito = await carritoModel
-        .findOne({ _id: cid })
-        .populate("products.product")
-        .lean();
+      const producto = await this.#productoService.findById(pid);
+      let carrito = await this.#carritoService.findOne({ _id: cid });
 
       //valido que existan
       if (carrito.Error) {
@@ -71,7 +83,7 @@ class CartController {
           });
         }
 
-        await carritoModel.updateOne({ _id: cid }, carrito);
+        await this.#carritoService.update({ _id: cid }, carrito);
         res
           .status(200)
           .send({ mensaje: "Carrito actualizado", carrito: carrito });
@@ -97,10 +109,7 @@ class CartController {
       const cid = req.params.cid;
 
       //busco carrito por id
-      let carrito = await await carritoModel
-        .findOne({ _id: cid })
-        .populate("products.product")
-        .lean();
+      let carrito = await await this.#carritoService.findOne({ _id: cid });
 
       //valido que existan
       if (carrito.Error) {
@@ -108,7 +117,7 @@ class CartController {
       }
 
       for (const item of productos) {
-        let producto = await productoModel.findById(pid);
+        let producto = await this.#productoService.findById(pid);
         if (producto.Error) {
           mensaje += `, ${item.product}`;
           bandera = true;
@@ -125,7 +134,7 @@ class CartController {
 
       console.log(carrito);
 
-      await carritoModel.updateOne({ _id: cid }, carrito);
+      await this.#carritoService.updateOne({ _id: cid }, carrito);
       res
         .status(200)
         .send({ mensaje: "Carrito actualizado", carrito: carrito });
@@ -149,11 +158,8 @@ class CartController {
       const pid = req.params.pid;
 
       //busco producto y carrito por id
-      const producto = await productoModel.findById(pid);
-      let carrito = await carritoModel
-        .findOne({ _id: cid })
-        .populate("products.product")
-        .lean();
+      const producto = await this.#productoService.findById(pid);
+      let carrito = await this.#carritoService.findOne({ _id: cid });
 
       //valido que existan
       if (carrito.Error) {
@@ -179,7 +185,7 @@ class CartController {
             Error: `El carrito no contiene el producto con id ${pid}`,
           });
         } else {
-          await carritoModel.updateOne({ _id: cid }, carrito);
+          await this.#carritoService.updateOne({ _id: cid }, carrito);
           res
             .status(200)
             .send({ mensaje: "Carrito actualizado", carrito: carrito });
@@ -201,11 +207,8 @@ class CartController {
       const pid = req.params.pid;
 
       //busco producto y carrito por id
-      const producto = await productoModel.findById(pid);
-      let carrito = await carritoModel
-        .findOne({ _id: cid })
-        .populate("products.product")
-        .lean();
+      const producto = await this.#productoService.findById(pid);
+      let carrito = await this.#carritoService.findOne({ _id: cid });
 
       //valido que existan
       if (carrito.Error) {
@@ -222,7 +225,7 @@ class CartController {
         carrito.products = carrito.products.filter(
           (item) => item.product._id.toString() != producto._id
         );
-        await carritoModel.updateOne({ _id: cid }, carrito);
+        await this.#carritoService.updateOne({ _id: cid }, carrito);
         res
           .status(200)
           .send({ mensaje: "Producto eliminado", carrito: carrito });
@@ -239,10 +242,7 @@ class CartController {
       const cid = req.params.cid;
 
       //busco carrito por id
-      let carrito = await carritoModel
-        .findOne({ _id: cid })
-        .populate("products.product")
-        .lean();
+      let carrito = await this.#carritoService.findOne({ _id: cid });
 
       //valido que existan
       if (carrito.Error) {
@@ -251,7 +251,7 @@ class CartController {
 
       carrito.products = [];
 
-      await carritoModel.updateOne({ _id: cid }, carrito);
+      await this.#carritoService.updateOne({ _id: cid }, carrito);
       res
         .status(200)
         .send({ mensaje: "Todos los producto eliminado", carrito: carrito });
@@ -259,7 +259,70 @@ class CartController {
       next(e);
     }
   }
+
+  async realizarCompra(req, res, next) {
+    try {
+      const { cid } = req.params;
+      let carrito = await this.#carritoService.findOne(cid);
+
+      if (!carrito) {
+        res
+          .status(404)
+          .send({ error: `No se encontró el carrito con id ${cid}` });
+        return;
+      }
+      if (carrito.products.length === 0) {
+        res.status(200).send({ error: `El carrito está vacío` });
+        return;
+      }
+
+      const usuario = await this.#usuarioService.findByCartId(carrito);
+      const comprador = usuario.correo;
+      let total = 0;
+      const productosLista = [];
+      const productosSinComprar = [];
+
+      for (const item of carrito.products) {
+        const pid = item.product._id.toString();
+        const producto = await this.#productoService.findById(pid);
+
+        if (producto.stock >= item.quantity) {
+          let nuevoStock = producto.stock - item.quantity;
+          await this.#productoService.update(pid, { stock: nuevoStock });
+          total = total + item.product.price * item.quantity;
+          productosLista.push(item);
+        } else {
+          productosSinComprar.push(item);
+        }
+      }
+
+      const ticket = {
+        monto: total,
+        comprador: comprador,
+        cartId: cid,
+        productos: productosLista,
+      };
+      const ticketCreado = await this.#ticketService.create(ticket);
+      carrito.products = productosSinComprar;
+      await this.#carritoService.update(cid, carrito);
+      res
+        .status(201)
+        .send({
+          mensaje: `Ticket creado con ID ${ticketCreado._id}`,
+          ticketCreado,
+        });
+
+        await this.#carritoService.enviarTicketEmail(comprador)
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
-const controller = new CartController();
+const controller = new CartController(
+  new CarritoService(),
+  new ProductoService(),
+  new UsuarioService(),
+  new TicketService()
+);
 export default controller;

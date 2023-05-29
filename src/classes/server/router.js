@@ -27,16 +27,16 @@ export class Router {
   }
 
   get(path, policies, ...callbacks) {
-    this.#router.get(path, handlePolicies(policies),...callbacks);
+    this.#router.get(path, handlePolicies(policies), ...callbacks);
   }
   post(path, policies, ...callbacks) {
-    this.#router.post(path, handlePolicies(policies),...callbacks);
+    this.#router.post(path, handlePolicies(policies), ...callbacks);
   }
   put(path, policies, ...callbacks) {
-    this.#router.put(path, handlePolicies(policies),...callbacks);
+    this.#router.put(path, handlePolicies(policies), ...callbacks);
   }
   delete(path, policies, ...callbacks) {
-    this.#router.delete(path, handlePolicies(policies),...callbacks);
+    this.#router.delete(path, handlePolicies(policies), ...callbacks);
   }
 }
 

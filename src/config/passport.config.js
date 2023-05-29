@@ -1,11 +1,13 @@
 import passport from "passport";
 import local from "passport-local";
-import userModel  from "../models/usuario.model.js";
+
 import { createHash, isValidPassword } from "../utils/crypto.js";
 import github from "passport-github2";
 import jwt from "passport-jwt";
 import data from "../data.js";
-import { compareSync } from "bcrypt";
+
+import userModel  from "../models/usuario.model.js";
+import carritoModel  from "../models/cart.model.js";
 
 const LocalStrategy = local.Strategy;
 const GitHubStrategy = github.Strategy;
@@ -26,12 +28,20 @@ export function configurePassport() {
           if (userExist) {
             return done(null, false);
           }
+          const carrito = await fetch("http://localhost:8080/api/cart", {
+          method: "POST",
+        });
+
+        const infoCarrito = await carrito.json()
+
+        console.log(infoCarrito.carritoNuevo._id, 'CARRRITTTTTOOOOOOOO')
 
           const newUser = await userModel.create({
             nombre,
             edad,
             apellido,
             correo: username,
+            cartId: infoCarrito.carritoNuevo._id,
             password: createHash(password),
           });
 

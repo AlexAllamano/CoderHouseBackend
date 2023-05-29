@@ -1,7 +1,14 @@
-import productoModel from "../models/producto.model.js";
+import ProductoService from "../services/product.services.js";
 import { socketServer } from "../socket/configure-socket.js";
 
 class ProductoController {
+
+  #productoSercive
+  constructor(service){
+    this.#productoSercive = service;
+  }
+
+
   //obtengo todos los productos, limitado, filtrados y/o ordenados
   async getAllProducts(req, res, next) {
     try {
@@ -10,7 +17,7 @@ class ProductoController {
       const sort = req.query.sort ?? -1;
       const query = req.body ?? {};
 
-      const products = await productoModel.paginate(
+      const products = await this.#productoSercive.paginate(
         {},
         { page: page, limit: limite, lean: true, sort: { price: sort } }
       );
@@ -35,7 +42,7 @@ class ProductoController {
   async getPorductById(req, res, enxt) {
     try {
       let pid = req.params.pid;
-      const product = await productoModel.findById(pid);
+      const product = await this.#productoSercive.findById(pid);
       res.status(200).send({ product: product });
     } catch (e) {
       next(e);
@@ -46,7 +53,7 @@ class ProductoController {
     try {
       let bandera = false;
       const producto = req.body;
-      let productos = await productoModel.find();
+      let productos = await this.#productoSercive.find();
 
       productos.forEach((item) => {
         if (producto.code === item.code) {
@@ -58,9 +65,9 @@ class ProductoController {
           .status(200)
           .send({ Error: "Ya existe un producto con ese code registrado" });
       } else {
-        let newPorducto = await productoModel.create(producto);
+        let newPorducto = await this.#productoSercive.create(producto);
 
-        productos = await productoModel.find();
+        productos = await this.#productoSercive.find();
         console.log(newPorducto);
 
         console.log(productos);
@@ -76,10 +83,10 @@ class ProductoController {
   async borrarProducto(req, res, next) {
     try {
       let pid = req.params.pid;
-      let result = await productoModel.deleteOne({ _id: pid });
+      let result = await this.#productoSercive.delete({ _id: pid });
       socketServer.emit(
         "mensajeDelete",
-        await productoModel.paginate(
+        await this.#productoSercive.paginate(
           {},
           { page: page, limit: limite, lean: true, sort: { price: sort } }
         )
@@ -95,7 +102,7 @@ class ProductoController {
     try {
         let pid = req.params.pid;
         let productToReplace = req.body;
-        let result = await productoModel.updateOne({ _id: pid }, productToReplace);
+        let result = await this.#productoSercive.update({ _id: pid }, productToReplace);
         res.status(200).send(result);
       } catch (e) {
         next(e);
@@ -103,5 +110,5 @@ class ProductoController {
    }
 }
 
-const controller = new ProductoController();
+const controller = new ProductoController(new ProductoService());
 export default controller;

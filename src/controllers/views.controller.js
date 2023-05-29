@@ -4,9 +4,11 @@ import usuarioModel from "../models/usuario.model.js";
 
 class ViewsController {
   async getHome(req, res, next) {
+    let limite = 5,
+      page = 1,
+      sort = -1,
+      query = {};
 
-    let limite = 5, page = 1, sort = -1, query = {}
-    
     const products = await productoModel.paginate(
       {},
       { page: page, limit: limite, lean: true, sort: { price: sort } }
@@ -16,8 +18,13 @@ class ViewsController {
   }
 
   async getRegistro(req, res, enxt) {
-    let limite = 5, page = 1, sort = -1, query = {}
-    
+    console.log("HOLLLLAAAAAAAAAAAAAA");
+
+    let limite = 5,
+      page = 1,
+      sort = -1,
+      query = {};
+
     const products = await productoModel.paginate(
       {},
       { page: page, limit: limite, lean: true, sort: { price: sort } }
@@ -27,8 +34,11 @@ class ViewsController {
   }
 
   async getRealTimeProducts(req, res, next) {
-    let limite = 5, page = 1, sort = -1, query = {}
-    
+    let limite = 5,
+      page = 1,
+      sort = -1,
+      query = {};
+
     const products = await productoModel.paginate(
       {},
       { page: page, limit: limite, lean: true, sort: { price: sort } }
@@ -57,11 +67,13 @@ class ViewsController {
       usuario.rol = "usuario";
     }
 
-    const products = await productoModel.getAll(
-      query.limite,
-      query.page,
-      query.sort,
-      query.query
+    const products = await productoModel.paginate(
+      {},
+      {
+        page: 1,
+        limit: 5,
+        lean: true
+      }
     );
 
     if (query.page > products.totalPages || query.page <= 0) {

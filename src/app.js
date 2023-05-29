@@ -1,6 +1,7 @@
 import express from "express";
 import handlebars from "express-handlebars";
 import route from './routes/index.js'
+import Vistasroute from './routes/views.route.js'
 import fileDirName from "./utils/fileDirName.js";
 import configureSocket from "./socket/configure-socket.js";
 import mongoose from "mongoose";
@@ -56,6 +57,7 @@ app.use("/static", express.static(__dirname + "/public"));
 // ROUTES
 
 app.use("/api", route);
+app.use("/", Vistasroute);
 
 
 app.get("/setCookie", (req, res) => {

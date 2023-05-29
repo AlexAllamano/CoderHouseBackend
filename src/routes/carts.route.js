@@ -6,13 +6,14 @@ class CartRouter extends Router {
     super("/cart");
   }
   init() {
-    this.get("/:cid", ["PUBLIC"], carritoController.getCartByID);
-    this.post("", ["PUBLIC"], carritoController.createEmpityCart);
-    this.post("/:cid/product/:pid", ["PUBLIC"], carritoController.addOneProductCart);
-    this.put("/:cid", ["PUBLIC"], carritoController.alterCart);
-    this.put("/:cid/product/:pid", ["PUBLIC"], carritoController.alterProductQuantity);
-    this.delete("/:cid/product/:pid", ["PUBLIC"], carritoController.deleteOneProduct);
-    this.delete("/:cid", ["PUBLIC"], carritoController.deleteAllProducts);  }
+    this.get("/:cid", ["PUBLIC"], carritoController.getCartByID.bind(carritoController));
+    this.post("", ["PUBLIC"], carritoController.createEmpityCart.bind(carritoController));
+    this.post("/:cid/product/:pid", ["PUBLIC"], carritoController.addOneProductCart.bind(carritoController));
+    this.post("/:cid/comprar", ["PUBLIC"], carritoController.realizarCompra.bind(carritoController));
+    this.put("/:cid", ["PUBLIC"], carritoController.alterCart.bind(carritoController));
+    this.put("/:cid/product/:pid", ["PUBLIC"], carritoController.alterProductQuantity.bind(carritoController));
+    this.delete("/:cid/product/:pid", ["PUBLIC"], carritoController.deleteOneProduct.bind(carritoController));
+    this.delete("/:cid", ["PUBLIC"], carritoController.deleteAllProducts.bind(carritoController));  }
 }
 
 const router = new CartRouter();

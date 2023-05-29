@@ -1,11 +1,20 @@
-import  userModel  from "../models/usuario.model.js";
+import CarritoService from "../services/cart.services.js";
+import UsuarioService from "../services/usuarios.services.js";
 
 class UsuarioController {
+
+  #usuarioSercive
+  #carritoSercive
+  constructor(service, service2){
+    this.#usuarioSercive = service;
+    this.#carritoSercive = service2;
+  }
+
   async obtenerUsuarios(req, res, next) {
     const { skip, limit, ...query } = req.query;
 
     try {
-      const usuarios = await userModel.paginate(query, {
+      const usuarios = await this.#usuarioSercive.paginate(query, {
         skip: Number(skip ?? 0),
         limit: Number(limit ?? 10),
       });
@@ -25,7 +34,7 @@ class UsuarioController {
     try {
       const idUsuario = req.params.idUsuario;
 
-      const usuario = await userModel.findOne({ _id: idUsuario });
+      const usuario = await this.#usuarioSercive.findOne({ _id: idUsuario });
       if (!usuario) {
         res
           .status(404)
@@ -39,10 +48,14 @@ class UsuarioController {
   }
 
   async postUsuario(req, res, next) {
-    const usuario = req.body;
+    let usuario = req.body;
 
     try {
-      const { _id } = await userModel.create(usuario);
+      const {_id: cartId} = await this.#carritoSercive.create();
+      usuario = {...usuario, cartId}
+
+      const { _id } = await this.#usuarioSercive.create(usuario);
+
 
       res.status(201).send({ id: _id });
     } catch (error) {
@@ -51,5 +64,5 @@ class UsuarioController {
   }
 }
 
-const controller = new UsuarioController();
+const controller = new UsuarioController(new UsuarioService(), new CarritoService());
 export default controller;
