@@ -64,7 +64,6 @@ class ViewsController {
       };
     } else {
       usuario = await usuarioModel.findOne({ correo });
-      usuario.rol = "usuario";
     }
 
     const products = await productoModel.paginate(
@@ -87,6 +86,10 @@ class ViewsController {
         mensaje: `Está intenando mostrar un número superior o inferior a la cantidad de documentos disponibles`,
       });
     } else {
+
+      console.log(usuario.cartId.toString())
+      const carritoId = usuario.cartId.toString();
+
       res.render("products", {
         title: "Productos",
         products: products.docs,
@@ -98,7 +101,8 @@ class ViewsController {
         next: products.nextPage,
         nombreUsuario: usuario.nombre,
         apellidoUsuario: usuario.apellido,
-        rolUsuario: usuario.rol,
+        rolUsuario: usuario.role,
+        cartId: carritoId
       });
     }
   }

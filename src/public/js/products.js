@@ -39,7 +39,29 @@ filtrar = () => {
   console.log(sort);
 };
 
+agregarCarrito = async (element) => {
+  const id = element.getAttribute('data-id');
+  const cartId = document.getElementById('user-data').getAttribute('data-user')
+
+  await fetch(`http://localhost:8080/api/cart/${cartId}/product/${id}`, {
+    method: 'POST'
+  });
+
+  alert('Producto agregado')
+  
+}
+
 function logout(event){
   event.preventDefault();
   
+}
+
+comprar = async () =>{
+  const cartId = document.getElementById('user-data').getAttribute('data-user');
+
+  await fetch(`http://localhost:8080/api/cart/${cartId}/comprar`, {
+  method: 'POST'
+});
+
+alert('Compra realizada... enviando email')
 }
