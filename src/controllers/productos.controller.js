@@ -1,3 +1,4 @@
+import MockingService from "../classes/mocks/moks.js";
 import ProductoService from "../services/product.services.js";
 import { socketServer } from "../socket/configure-socket.js";
 
@@ -39,7 +40,7 @@ class ProductoController {
     }
   }
   //obtengo un solo producto por id
-  async getPorductById(req, res, enxt) {
+  async getPorductById(req, res, next) {
     try {
       let pid = req.params.pid;
       const product = await this.#productoSercive.findById(pid);
@@ -108,6 +109,9 @@ class ProductoController {
         next(e);
       }
    }
+
+  
+
 }
 
 const controller = new ProductoController(new ProductoService());

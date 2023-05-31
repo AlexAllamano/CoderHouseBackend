@@ -1,7 +1,7 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import route from './routes/index.js'
-import Vistasroute from './routes/views.route.js'
+import route from "./routes/index.js";
+import Vistasroute from "./routes/views.route.js";
 import fileDirName from "./utils/fileDirName.js";
 import configureSocket from "./socket/configure-socket.js";
 import mongoose from "mongoose";
@@ -11,12 +11,13 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import { configurePassport } from "./config/passport.config.js";
 import passport from "passport";
-
+import compression from "express-compression";
+import errorMiddleware from "./classes/errors/error.middleware.js";
+import MockingService from "./classes/mocks/moks.js";
 
 const { __dirname } = fileDirName(import.meta);
 const app = express();
 const { PORT, MONGO_URL } = config;
-
 
 // MIDDLEWARES
 
@@ -59,6 +60,19 @@ app.use("/static", express.static(__dirname + "/public"));
 app.use("/api", route);
 app.use("/", Vistasroute);
 
+app.get("/mockingProducts", (req, res, next) => {
+  try {
+    {
+      const mokingService = new MockingService();
+      const productos = Array.from({ length: 100 }, () =>
+        mokingService.generarProducto()
+      );
+      res.status(200).send({ productos });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 app.get("/setCookie", (req, res) => {
   res
@@ -133,13 +147,6 @@ const httpServer = app.listen(PORT, () => {
 
 configureSocket(httpServer);
 
-app.use((error, req, res, next) => {
-  if (error.mesagge) {
-    return res.status(400).send({
-      message: error.mesagge,
-    });
-  }
+app.use(compression());
 
-  console.log('Ocurrio un error', error)
-  res.status(500).send({ error: error });
-});
+app.use(errorMiddleware);
