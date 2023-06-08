@@ -1,5 +1,6 @@
 import fs from "fs";
 import ProductManager from "./ProductoManager.js";
+import logger from "../classes/logs/winston-logger.js";
 
 export default class CartManager {
   constructor(path) {
@@ -14,7 +15,7 @@ export default class CartManager {
         this.leerArchivo().then(() => {});
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   }
 
@@ -30,7 +31,7 @@ export default class CartManager {
       await this.escribirJson();
       return('Carrito creado con ID ' + carrito.id );
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   };
 
@@ -48,7 +49,7 @@ export default class CartManager {
         };
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   };
 
@@ -93,7 +94,7 @@ export default class CartManager {
         };
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   };
 

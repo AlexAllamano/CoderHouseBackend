@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 import { passportCall, authorization } from "../utils/auth.js";
 import data from "../data.js";
+import logger from "../classes/logs/winston-logger.js";
 
 const SECRET = data.SECRET;
 
@@ -19,7 +20,7 @@ class JwtController {
       });
       res.send({ token });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 

@@ -14,6 +14,8 @@ import passport from "passport";
 import compression from "express-compression";
 import errorMiddleware from "./classes/errors/error.middleware.js";
 import MockingService from "./classes/mocks/moks.js";
+import logger from "./classes/logs/winston-logger.js";
+
 
 const { __dirname } = fileDirName(import.meta);
 const app = express();
@@ -70,7 +72,22 @@ app.get("/mockingProducts", (req, res, next) => {
       res.status(200).send({ productos });
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
+  }
+});
+
+app.get("/loggerTest", (req, res, next) => {
+  try {
+    logger.debug("Esto es un debug");
+    logger.http("Esto es un http");
+    logger.info("Esto es un info");
+    logger.warning("Esto es un warn");
+    logger.error("Esto es un error");
+    logger.fatal("Esto es un fatal");
+
+    res.status(200).send("Logs enviados");
+  } catch (error) {
+    logger.error(error);
   }
 });
 
@@ -83,7 +100,7 @@ app.get("/setCookie", (req, res) => {
 app.get("/getCookie", (req, res) => {
   const cookies = req.cookies;
   const signedCookies = req.signedCookies;
-  console.log(cookies, signedCookies);
+  logger.info(cookies, signedCookies);
 
   res.send([cookies, signedCookies]);
 });
@@ -142,7 +159,7 @@ const conection = mongoose.connect(MONGO_URL, {
 
 //WEBSOCKET
 const httpServer = app.listen(PORT, () => {
-  console.log("Escuchando server");
+  logger.info("Escuchando server");
 });
 
 configureSocket(httpServer);

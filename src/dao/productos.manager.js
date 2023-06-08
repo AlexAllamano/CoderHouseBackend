@@ -24,7 +24,6 @@ class ProductoManager {
   }
 
   async save(producto) {
-    console.log(producto);
     return await this.#persistencia.create(producto);
   }
 

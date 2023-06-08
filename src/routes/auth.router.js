@@ -2,6 +2,7 @@ import userModel from "../models/usuario.model.js";
 import { createHash, isValidPassword } from "../utils/crypto.js";
 import passport from "passport";
 import { Router } from "../classes/server/router.js";
+import logger from "../classes/logs/winston-logger.js";
 
 class AuthRouter extends Router {
   constructor() {
@@ -68,7 +69,7 @@ class AuthRouter extends Router {
       ["PUBLIC"],
       passport.authenticate("github", { failureRedirect: "/" }),
       (req, res) => {
-        console.log(req.user);
+        logger.info(req.user, "usuario logueado con github");
         req.session.correo = req.user.correo;
         res.redirect("/products");
       }

@@ -1,3 +1,5 @@
+import logger from "../classes/logs/winston-logger.js";
+
 export class MongoManager {
   constructor(model) {
     this.model = model;
@@ -6,10 +8,6 @@ export class MongoManager {
   async getAllProducts(limite, page, sort, query) {
     try {
 
-      console.log(limite);
-      console.log(page);
-      console.log(sort);
-      console.log(query);
 
       const arreglo = [];
 
@@ -83,7 +81,7 @@ export class MongoManager {
         return { Error: "Id no encontrado" };
       }
     } catch (error) {
-      console.log(error);
+      logger.error("Error al obtener el producto", error);
       throw error;
     }
   }

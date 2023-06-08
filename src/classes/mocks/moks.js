@@ -1,4 +1,5 @@
 import { Faker, en, es, base } from "@faker-js/faker";
+import logger from "../logs/winston-logger.js";
 
 const faker = new Faker({
   locale: [en, es, base],
@@ -27,7 +28,7 @@ class MockingService {
 
       return producto;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       next(error)
     }
   }

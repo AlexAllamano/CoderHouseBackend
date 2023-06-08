@@ -1,6 +1,7 @@
 import data from "../data.js";
 import nodemailer from 'nodemailer';
 import carritoModel from "../models/cart.model.js";
+import logger from "../classes/logs/winston-logger.js";
 
 class CarritoService {
   #model;
@@ -59,8 +60,8 @@ class CarritoService {
         <a href="http://localhost:8080/login">Ingresar</a>        
       `,
       })
-      .then((info) => console.log(info))
-      .catch((error) => console.log(error));
+      .then((info) => {logger.info(info, 'Correo enviado')})
+      .catch((error) => logger.error(error));
   }
 }
 

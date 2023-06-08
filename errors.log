@@ -1,0 +1,6 @@
+{"level":"debug","message":"Esto es un debug"}
+{"level":"http","message":"Esto es un http"}
+{"level":"info","message":"Esto es un info"}
+{"level":"warning","message":"Esto es un warn"}
+{"level":"error","message":"Esto es un error"}
+{"level":"info","message":"Escuchando server"}

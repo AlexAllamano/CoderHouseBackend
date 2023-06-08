@@ -18,7 +18,6 @@ class ViewsController {
   }
 
   async getRegistro(req, res, enxt) {
-    console.log("HOLLLLAAAAAAAAAAAAAA");
 
     let limite = 5,
       page = 1,
@@ -51,7 +50,6 @@ class ViewsController {
     const query = req.query;
     const correo = req.session.correo;
     let usuario;
-    console.log(correo);
 
     if (correo == "adminCoder@coder.com") {
       usuario = {
@@ -87,7 +85,6 @@ class ViewsController {
       });
     } else {
 
-      console.log(usuario.cartId.toString())
       const carritoId = usuario.cartId.toString();
 
       res.render("products", {

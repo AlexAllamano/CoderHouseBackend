@@ -1,3 +1,4 @@
+import logger from "../classes/logs/winston-logger.js";
 import MockingService from "../classes/mocks/moks.js";
 import ProductoService from "../services/product.services.js";
 import { socketServer } from "../socket/configure-socket.js";
@@ -23,7 +24,7 @@ class ProductoController {
         { page: page, limit: limite, lean: true, sort: { price: sort } }
       );
 
-      console.log(products);
+      logger.info("Productos obtenidos", products);
 
       res.status(200).send({
         payload: products.docs,
@@ -35,7 +36,7 @@ class ProductoController {
       });
       // res.status(200).send('fin')
     } catch (e) {
-      console.log(e);
+      logger.error("Error al obtener los productos", e);
       next(e);
     }
   }
@@ -69,14 +70,14 @@ class ProductoController {
         let newPorducto = await this.#productoSercive.create(producto);
 
         productos = await this.#productoSercive.find();
-        console.log(newPorducto);
+        logger.info("Producto agregado", newPorducto);
 
-        console.log(productos);
+        logger.info("Productos", productos);
         socketServer.emit("mensajePost", productos);
         res.status(200).send({ producto: newPorducto });
       }
     } catch (e) {
-      console.log(e);
+      logger.error("Error al agregar el producto", e);
       next(e);
     }
   }
@@ -94,7 +95,7 @@ class ProductoController {
       );
       res.status(200).send(result);
     } catch (e) {
-      console.log(e);
+      logger.error("Error al borrar el producto", e);
       next(e);
     }
   }

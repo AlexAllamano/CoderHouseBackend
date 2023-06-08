@@ -17,5 +17,6 @@ export default{
         ACOUNT: env.TWILIO_ACOOUNT,
         AUTH: env.TWILIO_AUTH,
         NUMBRE: env.TWILIO_NUMBER
-    }
+    },
+    ENTORNO: env.ENTORNO
 };

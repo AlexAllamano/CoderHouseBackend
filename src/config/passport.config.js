@@ -8,6 +8,7 @@ import data from "../data.js";
 
 import userModel  from "../models/usuario.model.js";
 import carritoModel  from "../models/cart.model.js";
+import logger from "../classes/logs/winston-logger.js";
 
 const LocalStrategy = local.Strategy;
 const GitHubStrategy = github.Strategy;
@@ -34,7 +35,7 @@ export function configurePassport() {
 
         const infoCarrito = await carrito.json()
 
-        console.log(infoCarrito.carritoNuevo._id, 'CARRRITTTTTOOOOOOOO')
+        logger.info(infoCarrito.carritoNuevo._id, 'CARRRITTTTTOOOOOOOO')
 
           const newUser = await userModel.create({
             nombre,
@@ -45,7 +46,7 @@ export function configurePassport() {
             password: createHash(password),
           });
 
-          console.log(newUser, "nuevo usuario creado con contraseña hasheada");
+          logger.info(newUser, "nuevo usuario creado con contraseña hasheada");
           return done(null, newUser);
         } catch (e) {
           done(e);
@@ -63,7 +64,8 @@ export function configurePassport() {
       async (username, password, done) => {
         try {
           const user = await userModel.findOne({ correo: username });
-          console.log(user);
+          logger.info(user)
+
           if (!user) {
             return done(null, false);
           }
@@ -89,9 +91,7 @@ export function configurePassport() {
       async (accessToken, refreshToken, profile, done) => {
         try {
           const correo = profile._json.email;
-          console.log(profile);
           const user = await userModel.findOne({ correo });
-          console.log(user);
           if (!user) {
             const newUser = await userModel.create({
               correo,
@@ -122,7 +122,6 @@ export function configurePassport() {
     },
     (payload, done) =>{
   try {
-    console.log(payload);
     done(null, payload)
   } catch (error) {
     done(error, false, {message: 'usuario no creado'});

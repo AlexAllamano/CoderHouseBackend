@@ -1,3 +1,4 @@
+import logger from "../classes/logs/winston-logger.js";
 import CarritoService from "../services/cart.services.js";
 import ProductoService from "../services/product.services.js";
 import TicketService from "../services/tickets.services.js";
@@ -91,7 +92,7 @@ class CartController {
         res.status(200).send({ Error: mensajeError });
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
       next(e);
     }
   }
@@ -132,7 +133,7 @@ class CartController {
 
       carrito.products = productos;
 
-      console.log(carrito);
+      logger.info(carrito);
 
       await this.#carritoService.updateOne({ _id: cid }, carrito);
       res

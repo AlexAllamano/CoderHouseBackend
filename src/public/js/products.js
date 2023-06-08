@@ -36,7 +36,6 @@ filtrar = () => {
  
   window.location.search = query.toString();
 
-  console.log(sort);
 };
 
 agregarCarrito = async (element) => {

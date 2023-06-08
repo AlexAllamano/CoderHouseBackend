@@ -1,11 +1,12 @@
 import passport from "passport";
+import logger from "../classes/logs/winston-logger.js";
 
 export const passportCall = (strategy) => {
   return async (req, res, next) => {
     passport.authenticate(strategy, (error, user, info) => {
       if (error) return next(error);
       if (!user) {
-        console.log({ info: info.message });
+        logger.error(info.message);
         return res.status(401).send({ error: info.message });
       }
       req.user = user;

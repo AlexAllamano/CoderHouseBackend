@@ -1,4 +1,5 @@
 import fs from "fs";
+import logger from "../classes/logs/winston-logger";
 
 export default class ProductManager {
   constructor(path) {
@@ -11,7 +12,7 @@ export default class ProductManager {
         this.leerArchivo().then(() => {});
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   }
 
@@ -69,7 +70,7 @@ export default class ProductManager {
         return { Mensaje: "Producto agregado", Producto: producto };
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   };
 
@@ -88,7 +89,7 @@ export default class ProductManager {
         return this.arreglo.splice(0, limite);
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   };
 
@@ -101,7 +102,7 @@ export default class ProductManager {
         return undefined;
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   };
 
@@ -115,7 +116,7 @@ export default class ProductManager {
         return { Error: "Producto no encontrado" };
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   };
 
@@ -129,7 +130,7 @@ export default class ProductManager {
         }
 
         let producto = this.arreglo.filter((pro) => pro.id.toString() === id.toString());
-        console.log(producto, 'PRODUCTO')
+        logger.info(producto, 'PRODUCTO')
 
         this.arreglo[this.arreglo.indexOf(producto[0])] = {
           title: nuevoProducto.title ?? producto[0].title,
@@ -148,7 +149,7 @@ export default class ProductManager {
         return { Error: "Producto no encontrado" };
       }
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   };
 

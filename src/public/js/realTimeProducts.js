@@ -1,3 +1,4 @@
+import logger from "../../classes/logs/winston-logger";
 
 
 const socket = io();
@@ -47,7 +48,7 @@ deleteProduct = () => {
 
 actualizarTabla = (data) => {
 
-  console.log(data)
+  logger.info(data)
 
   const tbody = document.querySelector("#tablaProductos tbody");
 
