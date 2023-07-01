@@ -1,0 +1,234 @@
+paths:
+  /api/cart/{cid}:
+    get:
+      summary: Obtiene los datos de un carrito
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Datos del producto obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Carrito"
+        "404":
+          description: Carrito no encontrado
+      tags:
+        - Carrito
+
+    put:
+      summary: Actualiza un carrito especificado
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productIds:
+                  type: array
+                  items:
+                    type: string
+                  description: Array de IDs de productos a actualizar en el carrito
+              required:
+                - productIds
+      responses:
+        "200":
+          description: Carrito actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carrito"
+        "404":
+          description: Carrito no encontrado
+      tags:
+        - Carrito
+    delete:
+      summary: Borra todos los productos del carrito
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Todos los productos han sido eliminados del carrito
+        "404":
+          description: Carrito no encontrado
+      tags:
+        - Carrito
+
+  /api/cart:
+    post:
+      summary: Crea un nuevo carrito vacío
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Carrito"
+      responses:
+        "200":
+          description: Carrito creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carrito"
+        "400":
+          description: Solicitud incorrecta
+      tags:
+        - Carrito
+
+  /api/cart/{cid}/product/{pid}:
+    post:
+      summary: Agrega una unidad de un producto al carrito
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto agregado exitosamente al carrito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carrito"
+        "404":
+          description: Carrito o producto no encontrado
+      tags:
+        - Carrito
+
+    put:
+      summary: Modifica la cantidad de un producto en un carrito especificado
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  description: Cantidad del producto a modificar en el carrito
+              required:
+                - quantity
+      responses:
+        "200":
+          description: Cantidad de producto modificada exitosamente en el carrito
+        "404":
+          description: Carrito o producto no encontrado
+      tags:
+        - Carrito
+
+    delete:
+      summary: Borra un producto del carrito
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado exitosamente del carrito
+        "404":
+          description: Carrito o producto no encontrado
+      tags:
+        - Carrito
+
+components:
+  schemas:
+    Carrito:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/CarritoItem"
+
+    CarritoItem:
+      type: object
+      properties:
+        product:
+          type: string
+          description: ID del producto
+          example: 5f9d5f8b0f0a7c2a3c8b4b9a
+        quantity:
+          type: number
+          description: Cantidad del producto en el carrito
+          example: 2
+
+    Producto:
+      type: object
+      properties:
+        tittle:
+          type: string
+          description: Título del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código del producto
+        stock:
+          type: number
+          description: Stock disponible del producto
+        thumbnail:
+          type: array
+          items:
+            type: string
+          description: Imágenes en miniatura del producto
+        status:
+          type: boolean
+          description: Estado del producto
+        owner:
+          type: string
+          description: Propietario del producto

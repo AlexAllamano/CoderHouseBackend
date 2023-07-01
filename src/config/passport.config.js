@@ -130,6 +130,7 @@ export function configurePassport() {
   );
 
   passport.serializeUser((user, done) => done(null, user._id));
+  
   passport.deserializeUser(async (id, done) => {
     const user = await userModel.findOne({ _id: id });
     done(null, user);

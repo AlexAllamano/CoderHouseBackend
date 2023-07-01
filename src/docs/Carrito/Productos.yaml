@@ -1,0 +1,126 @@
+paths:
+  /api/product/:
+    get:
+      summary: Obtiene todos los productos
+      responses:
+        '200':
+          description: Lista de productos obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Producto'
+      tags:
+        - Producto
+
+    post:
+      summary: Agrega un producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producto'
+      responses:
+        '201':
+          description: Producto agregado exitosamente
+        '400':
+          description: Solicitud inválida
+      tags:
+        - Producto
+  /api/product/{pid}:
+    get:
+      summary: Obtiene los datos de un producto
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Datos del producto obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producto'
+        '404':
+          description: Producto no encontrado
+      tags:
+        - Producto
+
+    delete:
+      summary: Borra un producto
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado exitosamente
+        '404':
+          description: Producto no encontrado
+      tags:
+        - Producto
+
+    put:
+      summary: Modifica un producto
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producto'
+      responses:
+        '200':
+          description: Producto modificado exitosamente
+        '400':
+          description: Solicitud inválida
+        '404':
+          description: Producto no encontrado
+      tags:
+        - Producto
+
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        tittle:
+          type: string
+          description: Título del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código del producto
+        stock:
+          type: number
+          description: Stock disponible del producto
+        thumbnail:
+          type: array
+          items:
+            type: string
+          description: Imágenes en miniatura del producto
+        status:
+          type: boolean
+          description: Estado del producto
+        owner:
+          type: string
+          description: Propietario del producto

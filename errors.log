@@ -4,3 +4,27 @@
 {"level":"warning","message":"Esto es un warn"}
 {"level":"error","message":"Esto es un error"}
 {"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"docs":[{"__v":0,"_id":"6423713d931680cc39debb31","code":"djg7ahw92","description":"Auto gratis","id":"6423713d931680cc39debb31","price":50,"status":false,"stock":82,"thumbnail":[],"tittle":"Auto"},{"__v":0,"_id":"642ad157f3d56428dffd1271","code":"6666","description":"descripcion seis","id":"642ad157f3d56428dffd1271","price":6,"status":true,"stock":86,"thumbnail":[],"tittle":"producto seis"},{"__v":0,"_id":"6423538422e412b7337d74e4","code":"6","description":"descripcion seis","id":"6423538422e412b7337d74e4","price":6,"status":true,"stock":5,"thumbnail":[],"tittle":"producto seis"},{"__v":0,"_id":"642ad09b101f8ff8ad14a443","code":"66","description":"descripcion seis","id":"642ad09b101f8ff8ad14a443","price":6,"status":true,"stock":6,"thumbnail":[],"tittle":"producto seis"},{"__v":0,"_id":"642ad12127fcf5cd7ac9a492","code":"666","description":"descripcion seis","id":"642ad12127fcf5cd7ac9a492","price":6,"status":true,"stock":6,"thumbnail":[],"tittle":"producto seis"}],"hasNextPage":true,"hasPrevPage":false,"level":"info","limit":5,"message":"Productos obtenidos","nextPage":2,"page":1,"pagingCounter":1,"prevPage":null,"totalDocs":8,"totalPages":2}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}

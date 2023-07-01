@@ -35,6 +35,11 @@ const productoSchema = new mongoose.Schema({
     default: true,
     required: false,
   },
+  owner: {
+    type: String, 
+    default: "admin",
+    required: true,
+  },
 });
 productoSchema.plugin(mongoosePaginate);
 const productoModel = mongoose.model(productoCollection, productoSchema);

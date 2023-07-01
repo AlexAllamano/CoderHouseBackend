@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   edad: { type: Number, required: true },
   password: { type: String, required: true },
   cartId: { type: Schema.Types.ObjectId, ref: "carritos", required: true },
-  role: { type: String, enum: ["user", "admin"], default: "user" },
+  role: { type: String, enum: ["user", "admin", "premium"], default: "user" },
 });
 
 userSchema.plugin(mongoosePaginate);

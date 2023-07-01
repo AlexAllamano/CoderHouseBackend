@@ -15,7 +15,8 @@ import compression from "express-compression";
 import errorMiddleware from "./classes/errors/error.middleware.js";
 import MockingService from "./classes/mocks/moks.js";
 import logger from "./classes/logs/winston-logger.js";
-
+import spec from "./docs/swagger-options.js";
+import swaggerUi from "swagger-ui-express";
 
 const { __dirname } = fileDirName(import.meta);
 const app = express();
@@ -59,6 +60,7 @@ app.use("/static", express.static(__dirname + "/public"));
 
 // ROUTES
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(spec));
 app.use("/api", route);
 app.use("/", Vistasroute);
 

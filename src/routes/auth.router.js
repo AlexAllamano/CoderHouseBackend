@@ -9,8 +9,7 @@ class AuthRouter extends Router {
     super("/auth");
   }
   init() {
-    this.post(
-      "/login",["PUBLIC"],
+    this.post("/login",["PUBLIC"],
       passport.authenticate("login", {
         failureRedirect: "/api/auth/loginfallido",
       }),
@@ -21,8 +20,7 @@ class AuthRouter extends Router {
       }
     );
 
-    this.post(
-      "/register",
+    this.post("/register",
       ["PUBLIC"],
       passport.authenticate("register", {
         failureRedirect: "/api/auth/registrofallido",
@@ -57,8 +55,7 @@ class AuthRouter extends Router {
       } catch (e) {}
     });
 
-    this.get(
-      "/github",
+    this.get("/github",
       ["PUBLIC"],
       passport.authenticate("github", { scope: ["user:email"] }),
       async (req, res) => {}
