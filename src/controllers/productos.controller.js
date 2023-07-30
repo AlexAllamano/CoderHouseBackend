@@ -1,15 +1,15 @@
 import logger from "../classes/logs/winston-logger.js";
-import MockingService from "../classes/mocks/moks.js";
 import ProductoService from "../services/product.services.js";
+import UsuarioService from "../services/usuarios.services.js";
 import { socketServer } from "../socket/configure-socket.js";
 
 class ProductoController {
-
-  #productoSercive
-  constructor(service){
+  #productoSercive;
+  #usuarioSercive;
+  constructor(service, service2) {
     this.#productoSercive = service;
+    this.#usuarioSercive = service2;
   }
-
 
   //obtengo todos los productos, limitado, filtrados y/o ordenados
   async getAllProducts(req, res, next) {
@@ -54,8 +54,14 @@ class ProductoController {
   async postProducto(req, res, next) {
     try {
       let bandera = false;
-      const producto = req.body;
+      let producto = req.body;
       let productos = await this.#productoSercive.find();
+      let usuario = await this.#usuarioSercive.findByCorreo(req.body.usuario);
+
+      if (usuario) {
+        producto.owner = usuario._id;
+      }
+
 
       productos.forEach((item) => {
         if (producto.code === item.code) {
@@ -74,7 +80,7 @@ class ProductoController {
 
         logger.info("Productos", productos);
         socketServer.emit("mensajePost", productos);
-        res.status(200).send({ producto: newPorducto });
+        res.status(201).send({ producto: newPorducto });
       }
     } catch (e) {
       logger.error("Error al agregar el producto", e);
@@ -99,21 +105,24 @@ class ProductoController {
       next(e);
     }
   }
-   //modifico un producto por id
-   async alterProducto(req, res, next){
+  //modifico un producto por id
+  async alterProducto(req, res, next) {
     try {
-        let pid = req.params.pid;
-        let productToReplace = req.body;
-        let result = await this.#productoSercive.update({ _id: pid }, productToReplace);
-        res.status(200).send(result);
-      } catch (e) {
-        next(e);
-      }
-   }
-
-  
-
+      let pid = req.params.pid;
+      let productToReplace = req.body;
+      let result = await this.#productoSercive.update(
+        { _id: pid },
+        productToReplace
+      );
+      res.status(200).send(result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
-const controller = new ProductoController(new ProductoService());
+const controller = new ProductoController(
+  new ProductoService(),
+  new UsuarioService()
+);
 export default controller;

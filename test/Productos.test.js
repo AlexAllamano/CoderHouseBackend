@@ -12,11 +12,9 @@
 //       useUnifiedTopology: true,
 //     });
 //     this.producto = new productService();
-//     console.log("before");
 //   });
 
 //   afterEach(async function () {
-//     console.log("afterEach");
 //   });
 
 //   it("El DAO debe poder obtener todos los usuarios ", async function () {

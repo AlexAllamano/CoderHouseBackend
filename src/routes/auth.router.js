@@ -3,24 +3,33 @@ import { createHash, isValidPassword } from "../utils/crypto.js";
 import passport from "passport";
 import { Router } from "../classes/server/router.js";
 import logger from "../classes/logs/winston-logger.js";
+import jwtController from "../controllers/jwt.controller.js";
 
 class AuthRouter extends Router {
   constructor() {
     super("/auth");
   }
   init() {
-    this.post("/login",["PUBLIC"],
+    this.post(
+      "/login",
+      ["PUBLIC"],
       passport.authenticate("login", {
         failureRedirect: "/api/auth/loginfallido",
       }),
       async (req, res) => {
         req.session.correo = req.user.correo;
 
-        res.redirect("/products");
+        res.cookie("AUTH", jwtController.post(req.user), {
+          maxAge: 60 * 60 * 1000 * 24,
+          httpOnly: true,
+        });
+
+        res.redirect("/api/products");
       }
     );
 
-    this.post("/register",
+    this.post(
+      "/register",
       ["PUBLIC"],
       passport.authenticate("register", {
         failureRedirect: "/api/auth/registrofallido",
@@ -55,7 +64,8 @@ class AuthRouter extends Router {
       } catch (e) {}
     });
 
-    this.get("/github",
+    this.get(
+      "/github",
       ["PUBLIC"],
       passport.authenticate("github", { scope: ["user:email"] }),
       async (req, res) => {}

@@ -6,9 +6,12 @@ class UsuarioRouter extends Router {
     super("/usuarios");
   }
   init() {
-    this.get("/", ["PUBLIC"], usuarioController.obtenerUsuarios.bind(usuarioController));
-    this.get("/:idUsuario", ["PUBLIC"], usuarioController.getUsuarioById.bind(usuarioController));
-    this.post("/", ["PUBLIC"], usuarioController.postUsuario.bind(usuarioController));
+    this.get("/", ["ADMIN"], usuarioController.obtenerUsuarios.bind(usuarioController));
+    this.get("/:idUsuario", ["ADMIN"], usuarioController.getUsuarioById.bind(usuarioController));
+    this.post("/", ["ADMIN"], usuarioController.postUsuario.bind(usuarioController));
+    this.put("/cambiarRole/:correo", ["ADMIN"], usuarioController.cambiarRole.bind(usuarioController));
+    this.delete("/usuariosInactivos", ["ADMIN"], usuarioController.borrarInactivos.bind(usuarioController));
+    this.delete("/:correo", ["ADMIN"], usuarioController.borrarUsuario.bind(usuarioController));
   }
 }
 

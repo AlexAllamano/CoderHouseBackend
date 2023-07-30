@@ -1,13 +1,26 @@
-import { Router } from "express";
+import { Router } from "../classes/server/router.js";
 import viewsController from '../controllers/views.controller.js';
+class ViewsRouter extends Router{
+    constructor() {
+        super("/");
+      }
 
-const route = Router();
+      init(){
+        this.get("/",["PUBLIC"], viewsController.getHome.bind(viewsController));
+        this.get("/home",["PUBLIC"], viewsController.getHome.bind(viewsController));
+        this.get("/registro",["PUBLIC"], viewsController.getRegistro.bind(viewsController));
+        this.get("/realtimeproducts",["PUBLIC"], viewsController.getRealTimeProducts.bind(viewsController));
+        this.get("/products",["PUBLIC"], viewsController.getProducts.bind(viewsController));
+        this.get("/carts/:cid",["PUBLIC"], viewsController.getCartById.bind(viewsController));
+        this.get("/chat",["PUBLIC"], viewsController.getChats.bind(viewsController));
+        this.get("/listaUsuarios",["ADMIN"], viewsController.getListaUsuarios.bind(viewsController));
+        this.get("/crearProducto",["ADMIN","PREMIUM"], viewsController.getCrearProducto.bind(viewsController));
+    }
+    
+}
 
-route.get("/", viewsController.getHome.bind(viewsController));
-route.get("/registro", viewsController.getRegistro.bind(viewsController));
-route.get("/realtimeproducts", viewsController.getRealTimeProducts.bind(viewsController));
-route.get("/products", viewsController.getProducts.bind(viewsController));
-route.get("/carts/:cid", viewsController.getCartById.bind(viewsController));
-route.get("/chat", viewsController.getChats.bind(viewsController));
 
-export default route;
+
+const router = new ViewsRouter();
+
+export default router;

@@ -18,7 +18,6 @@ class ViewsController {
   }
 
   async getRegistro(req, res, enxt) {
-
     let limite = 5,
       page = 1,
       sort = -1,
@@ -51,25 +50,14 @@ class ViewsController {
     const correo = req.session.correo;
     let usuario;
 
-    if (correo == "adminCoder@coder.com") {
-      usuario = {
-        nombre: "Usuario",
-        apellido: "Coder",
-        correo: "adminCoder@coder.com",
-        edad: 100,
-        password: "adminCod3r123",
-        rol: "Admin",
-      };
-    } else {
-      usuario = await usuarioModel.findOne({ correo });
-    }
+    usuario = await usuarioModel.findOne({ correo });
 
     const products = await productoModel.paginate(
       {},
       {
         page: 1,
-        limit: 5,
-        lean: true
+        limit: 20,
+        lean: true,
       }
     );
 
@@ -84,9 +72,8 @@ class ViewsController {
         mensaje: `Está intenando mostrar un número superior o inferior a la cantidad de documentos disponibles`,
       });
     } else {
-
       const carritoId = usuario.cartId.toString();
-
+      const idUsuario = usuario._id.toString();
       res.render("products", {
         title: "Productos",
         products: products.docs,
@@ -99,7 +86,8 @@ class ViewsController {
         nombreUsuario: usuario.nombre,
         apellidoUsuario: usuario.apellido,
         rolUsuario: usuario.role,
-        cartId: carritoId
+        cartId: carritoId,
+        idUsuario,
       });
     }
   }
@@ -127,9 +115,23 @@ class ViewsController {
   }
 
   async getChats(req, res, next) {
-    const products = await productoModel.getAll();
-
     res.render("chat", {});
+  }
+
+  async getListaUsuarios(req, res, next) {
+    const listaUsuarios = await usuarioModel.find();
+
+    const usuariosFianl = listaUsuarios.map((usuario) => {
+      const { nombre, apellido, correo, role, tipoUsuario } = usuario;
+      return { nombre, apellido, correo, role, tipoUsuario };
+    });
+
+    res.render("listaUsuarios", { usuarios: usuariosFianl });
+  }
+
+  async getCrearProducto(req, res, next) {
+
+    res.render("crearProducto", { usuario: req.session.correo });
   }
 }
 

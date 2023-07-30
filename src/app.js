@@ -1,7 +1,7 @@
 import express from "express";
 import handlebars from "express-handlebars";
 import route from "./routes/index.js";
-import Vistasroute from "./routes/views.route.js";
+import webRoute from "./routes/webIndwx.js";
 import fileDirName from "./utils/fileDirName.js";
 import configureSocket from "./socket/configure-socket.js";
 import mongoose from "mongoose";
@@ -17,10 +17,12 @@ import MockingService from "./classes/mocks/moks.js";
 import logger from "./classes/logs/winston-logger.js";
 import spec from "./docs/swagger-options.js";
 import swaggerUi from "swagger-ui-express";
+import EventEmmitter from 'events'
 
 const { __dirname } = fileDirName(import.meta);
 const app = express();
 const { PORT, MONGO_URL } = config;
+process.setMaxListeners(0);
 
 // MIDDLEWARES
 
@@ -44,25 +46,18 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const auth = (req, res, next) => {
-  const admin = req.session.admin;
 
-  if (admin) {
-    next();
-  } else {
-    res.status(401).send({ error: "No autorizado" });
-  }
-};
 
 //ARCHIVOS ESTÁTICOS
 
-app.use("/static", express.static(__dirname + "/public"));
+app.use("/api/static", express.static(__dirname + "/public", { type: "application/javascript" }));
+app.use("/static", express.static(__dirname + "/public", { type: "application/javascript" }));
 
 // ROUTES
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(spec));
 app.use("/api", route);
-app.use("/", Vistasroute);
+app.use("/", webRoute);
 
 app.get("/mockingProducts", (req, res, next) => {
   try {
@@ -93,23 +88,7 @@ app.get("/loggerTest", (req, res, next) => {
   }
 });
 
-app.get("/setCookie", (req, res) => {
-  res
-    .cookie("prueba", "Primera Cookie", { maxAge: 10000, signed: true })
-    .send("Cookie creada");
-});
 
-app.get("/getCookie", (req, res) => {
-  const cookies = req.cookies;
-  const signedCookies = req.signedCookies;
-  logger.info(cookies, signedCookies);
-
-  res.send([cookies, signedCookies]);
-});
-
-app.get("/deleteCookie", (req, res) => {
-  res.clearCookie("prueba").send("se borró la cookie");
-});
 
 app.get("/session", (req, res) => {
   if (req.session.counter) {
@@ -131,26 +110,33 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get("/login", (req, res) => {
-  const { username, password } = req.query;
-  if (username !== "admin" || password !== "admin") {
-    res.status(401).send({ error: "Usuario o contraseña incorrecta" });
-    return;
-  }
-  req.session.user = username;
-  req.session.admin = true;
-  res.send({ login: "logueado" });
-});
-
-app.get("/autorizado", auth, (req, res) => {
-  res.send({ autorizado: "ok, autorizado" });
-});
-
 // HANDLEBARS
 
-app.engine("handlebars", handlebars.engine());
+const hbs = handlebars.create({
+  helpers:{
+    gt: function(value){
+      return value > 0;
+    },
+    verificarAdmin: function(value){
+      return value.toLowerCase() =="admin";
+    },
+    verificarPremium: function(role, idUsuario, productOwnerId){
+      if(role.toLowerCase() =="admin"){
+        return false
+      }
+
+      return idUsuario == productOwnerId;
+    }
+  }
+})
+
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
+
+
+
+
 
 // MONGOOSE
 

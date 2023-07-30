@@ -1,0 +1,64 @@
+<div class="container pb-5 pt-5">
+
+<a class="btn btn-danger" href="http://localhost:8080/api/products">Volver</a>
+
+  <div>
+    <h1 class="text-center">Agregar producto</h1>
+  </div>
+
+  <div class="container mt-4">
+    <form action="">
+
+            <input
+            id="nombre"
+            type="text"
+            class="form-control mt-2 mb-3"
+            placeholder="Nombre"
+            aria-label="nombre"
+          />
+
+           <input
+            id="descripcion"
+            type="text"
+            class="form-control mt-2 mb-3"
+            placeholder="Descripción"
+            aria-label="descripcion"
+          />
+
+           <input
+            id="precio"
+            type="number"
+            class="form-control mt-2 mb-3"
+            placeholder="Precio"
+            aria-label="precio"
+          />
+
+           <input
+            id="codigo"
+            type="text"
+            class="form-control mt-2 mb-3"
+            placeholder="Código"
+            aria-label="codigo"
+          />
+
+          <input
+            id="stock"
+            type="number"
+            class="form-control mt-2 mb-3"
+            placeholder="Stock"
+            aria-label="stock"
+          />
+      
+      <div class="d-flex justify-content-center">
+        <button
+        type="button"
+        id="boton"
+        onclick="crearProducto(event)"
+        usuario="{{usuario}}"
+        class="btn btn-primary"
+      >Agregar producto</button>
+      </div>
+    </form>
+</div>
+
+<script src="static/js/crearProducto.js"></script>

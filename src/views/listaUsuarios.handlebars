@@ -1,0 +1,56 @@
+<div class="container pt-5">
+  <div class="pb-4">
+
+    <h3>Lista de usuarios registrados</h3>
+
+  </div>
+
+  <table class="table table-hover mt-5">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Role</th>
+        <th scope="col">Tipo de usuario</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each usuarios}}
+        <tr>
+          <th scope="row">{{this.nombre}}</th>
+          <td>{{this.apellido}}</td>
+          <td>{{this.correo}}</td>
+          <td>{{this.role}}</td>
+          <td>{{this.tipoUsuario}}</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              onclick="cambiarRole(this)"
+              correo="{{this.correo}}"
+            >Cambiar Role</button>
+
+            <button
+              class="btn btn-danger"
+              onclick="borrarUsuario(this)"
+              correo="{{this.correo}}"
+            >Borrar</button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="pb-4">
+    <button
+    class="btn btn-danger"
+    onclick="borrarusuariosInactivos(this)"
+    correo="{{this.correo}}"
+  >Borrar usuarios inactivos</button>
+  </div>
+
+  <a class="btn btn-danger" href="http://localhost:8080/api/products">Volver</a>
+</div>
+
+<script src="static/js/products.js"></script>

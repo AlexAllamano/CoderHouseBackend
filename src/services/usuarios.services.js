@@ -1,4 +1,7 @@
 import userModel from "../models/usuario.model.js";
+import data from "../data.js";
+import logger from "../classes/logs/winston-logger.js";
+import nodemailer from "nodemailer";
 
 class UsuarioService {
   #model;
@@ -15,7 +18,11 @@ class UsuarioService {
   }
 
   async findOne(usuario) {
-    return this.#model.findOne({ _id: usuario }).populate('cartId');
+    return this.#model.findOne({ _id: usuario }).populate("cartId");
+  }
+
+  async findByCorreo(correo) {
+    return this.#model.findOne({ correo: correo }).populate("cartId");
   }
 
   async paginate(condiciones, opciones) {
@@ -32,8 +39,46 @@ class UsuarioService {
     await this.#model.findByIdAndDelete(id);
   }
 
+  async deleteByCorreo(correo) {
+    await this.#model.findOneAndRemove({ correo });
+  }
+
+  async getUsuariosInactivos() {
+    const dosDiasAtras = new Date();
+    console.log(dosDiasAtras);
+
+    return await this.#model.find({ lastLogin: { $lt: dosDiasAtras } });
+  }
+
   async findByCartId(carrito) {
-    return this.#model.findOne({ cartId: carrito }).populate('cartId');
+    return this.#model.findOne({ cartId: carrito }).populate("cartId");
+  }
+
+  async enviarCorreoUsuarioEliminado(correo) {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      auth: {
+        user: "alexallamano@gmail.com",
+        pass: data.CLAVE_GMAIL,
+      },
+    });
+
+    transporter
+      .sendMail({
+        from: "'CoderHouse Backend' <proyecto@coderhouse.com>",
+        to: correo,
+        subject: "Usuario eliminado",
+        html: `
+        <h1>Hemos eliminado su usuario debido a inactividad</h1>
+        <h2>Por haber estado más de dos días sin iniciar sesión, hemos borrado sus registros</h2>
+      `,
+      })
+      .then((info) => {
+        logger.info(info, "Correo enviado");
+        console.log(`CORREO ENVIADO A ${correo}`);
+      })
+      .catch((error) => logger.error(error));
   }
 }
 

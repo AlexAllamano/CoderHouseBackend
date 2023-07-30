@@ -44,6 +44,7 @@ class CartController {
       next(e);
     }
   }
+
   //cargar un producto a un carrito, solo 1. Agregar 1 si ya existe
   async addOneProductCart(req, res, next) {
     try {

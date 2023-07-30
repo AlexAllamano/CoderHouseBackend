@@ -6,8 +6,8 @@ import github from "passport-github2";
 import jwt from "passport-jwt";
 import data from "../data.js";
 
-import userModel  from "../models/usuario.model.js";
-import carritoModel  from "../models/cart.model.js";
+import userModel from "../models/usuario.model.js";
+import carritoModel from "../models/cart.model.js";
 import logger from "../classes/logs/winston-logger.js";
 
 const LocalStrategy = local.Strategy;
@@ -24,26 +24,22 @@ export function configurePassport() {
       },
       async (req, username, password, done) => {
         try {
-          const { nombre, apellido, edad } = req.body;
+          const { nombre, apellido, edad, role } = req.body;
           const userExist = await userModel.findOne({ correo: username });
           if (userExist) {
             return done(null, false);
           }
-          const carrito = await fetch("http://localhost:8080/api/cart", {
-          method: "POST",
-        });
 
-        const infoCarrito = await carrito.json()
-
-        logger.info(infoCarrito.carritoNuevo._id, 'CARRRITTTTTOOOOOOOO')
+          const nuevoCarrito = await carritoModel.create({});
 
           const newUser = await userModel.create({
             nombre,
             edad,
             apellido,
             correo: username,
-            cartId: infoCarrito.carritoNuevo._id,
+            cartId: nuevoCarrito._id,
             password: createHash(password),
+            role: role || "user",
           });
 
           logger.info(newUser, "nuevo usuario creado con contraseña hasheada");
@@ -64,16 +60,21 @@ export function configurePassport() {
       async (username, password, done) => {
         try {
           const user = await userModel.findOne({ correo: username });
-          logger.info(user)
+          logger.info(user);
 
           if (!user) {
             return done(null, false);
           }
+
           if (!isValidPassword(password, user.password)) {
             return done(null, false);
           }
+          await userModel.findByIdAndUpdate(user._id, {
+            lastLogin: Date.now(),
+          });
           return done(null, user);
         } catch (e) {
+          console.log(e);
           done(e);
         }
       }
@@ -113,24 +114,26 @@ export function configurePassport() {
 
   passport.use(
     "jwt",
-    new JWTStrategy({
-      jwtFromRequest: jwt.ExtractJwt.fromExtractors([
-        jwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
-        cookieExtractor,
-      ]),
-      secretOrKey: 'CODER_SUPER_SECRETO'
-    },
-    (payload, done) =>{
-  try {
-    done(null, payload)
-  } catch (error) {
-    done(error, false, {message: 'usuario no creado'});
-  }      
-    })
+    new JWTStrategy(
+      {
+        jwtFromRequest: jwt.ExtractJwt.fromExtractors([
+          jwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
+          cookieExtractor,
+        ]),
+        secretOrKey: "CODER_SUPER_SECRETO",
+      },
+      (payload, done) => {
+        try {
+          done(null, payload);
+        } catch (error) {
+          done(error, false, { message: "usuario no creado" });
+        }
+      }
+    )
   );
 
   passport.serializeUser((user, done) => done(null, user._id));
-  
+
   passport.deserializeUser(async (id, done) => {
     const user = await userModel.findOne({ _id: id });
     done(null, user);

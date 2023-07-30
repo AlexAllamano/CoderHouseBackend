@@ -7,7 +7,7 @@ async function registrar(event) {
   const edad = document.getElementById("edad").value;
   const password = document.getElementById("password").value;
 
-  const response = api
+  await api
     .post("/api/auth/register", {
       nombre,
       apellido,
@@ -18,22 +18,6 @@ async function registrar(event) {
     .then((d) => {
       alert("Todo bien");
     });
-  //   await fetch("/api/usuarios", {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       nombre,
-  //       apellido,
-  //       correo,
-  //       edad,
-  //       password,
-  //     }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   if (response.ok) {
-  //     response.json().then((d) => {
-  //       alert("Todo bien");
-  //     });
-  //   }
+
+
 }

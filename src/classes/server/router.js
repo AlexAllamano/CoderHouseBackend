@@ -1,5 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import data from "../../data.js";
 
 export class Router {
   #router;
@@ -62,21 +63,38 @@ function generarCustomResponse(req, res, next) {
   next();
 }
 
+const SECRET = data.SECRET;
+
 function handlePolicies(policies) {
   return (req, res, next) => {
-    if (policies.includes("PUBLIC")) {
-      return next();
+    try {
+
+      if (!req.cookies.AUTH) {
+
+        res.cookie("AUTH", "SIN USO");
+
+        return res.redirect("http://localhost:8080/api/home");
+      }
+
+      if (policies.includes("PUBLIC")) {
+        return next();
+      }
+
+      
+
+      const user = jwt.verify(req.cookies.AUTH, SECRET);
+      if (!policies.includes(user.user.role.toUpperCase())) {
+        return res.status(401).send({ status: "error", error: "Acceso negado" });
+      }
+
+      if(Date.now() < user.exp){
+        return res.status(403).send({ status: "error", error: "Token expirado" })
+      } 
+      req.user = user;
+
+      next();
+    } catch (e) {
+      res.send('ERROR AL LEER TOKEN')
     }
-    const authHeader = req.headers["Authorization"];
-    if (!authHeader) {
-      return res.status(401).send({ status: "error", error: "No autorizado" });
-    }
-    const token = authHeader.split(" ");
-    const user = jwt.verify(token, "CODER_SUPER_SECRETO");
-    if (!policies.includes(user.user.rol.toUpperCase())) {
-      res.status(403).send({ status: "error", error: "Acceso negado" });
-    }
-    req.user = user;
-    next();
   };
 }

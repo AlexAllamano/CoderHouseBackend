@@ -2,10 +2,9 @@ import CarritoService from "../services/cart.services.js";
 import UsuarioService from "../services/usuarios.services.js";
 
 class UsuarioController {
-
-  #usuarioSercive
-  #carritoSercive
-  constructor(service, service2){
+  #usuarioSercive;
+  #carritoSercive;
+  constructor(service, service2) {
     this.#usuarioSercive = service;
     this.#carritoSercive = service2;
   }
@@ -16,7 +15,7 @@ class UsuarioController {
     try {
       const usuarios = await this.#usuarioSercive.paginate(query, {
         skip: Number(skip ?? 0),
-        limit: Number(limit ?? 10),
+        limit: Number(limit ?? 100),
       });
       res.send({
         usuarios: usuarios.docs,
@@ -51,18 +50,78 @@ class UsuarioController {
     let usuario = req.body;
 
     try {
-      const {_id: cartId} = await this.#carritoSercive.create();
-      usuario = {...usuario, cartId}
+      const { _id: cartId } = await this.#carritoSercive.create();
+      usuario = { ...usuario, cartId };
 
       const { _id } = await this.#usuarioSercive.create(usuario);
-
 
       res.status(201).send({ id: _id });
     } catch (error) {
       next(error);
     }
   }
+
+  async cambiarRole(req, res, next) {
+    let correo = req.params.correo;
+
+    const usuario = await this.#usuarioSercive.findByCorreo(correo);
+    let nuevoRole = "";
+
+    if (!usuario) {
+      res.send({ mensaje: "Erro: Usuario no encontrado" });
+    } else {
+      nuevoRole = usuario.tipoUsuario === "normal" ? "premium" : "normal";
+      usuario.tipoUsuario = nuevoRole;
+      await this.#usuarioSercive.update(usuario._id, {
+        tipoUsuario: nuevoRole,
+      });
+    }
+    res.send(`Role del usuario actualizado: ${nuevoRole}`);
+  }
+
+  async borrarInactivos(req, res, next) {
+    try {
+      console.log("VAMOS A BORRAR USUARIOS");
+      let usuariosInactivos = await this.#usuarioSercive.getUsuariosInactivos();
+
+      usuariosInactivos = usuariosInactivos.filter(
+        (item) => item.nombre !== "Admin"
+      );
+
+      console.log(usuariosInactivos);
+
+      if (usuariosInactivos.length > 0) {
+        for (const usuario of usuariosInactivos) {
+          await this.#usuarioSercive.deleteByCorreo(usuario.correo);
+          await this.#usuarioSercive.enviarCorreoUsuarioEliminado(usuario.correo);
+        }
+
+        res.status(200).send({ mensaje: "Usuarios borrados" });
+      } else {
+        res
+          .status(202)
+          .send({ mensaje: "No se encontraron usuarios inactivos" });
+      }
+    } catch (e) {
+      console.log(e);
+      next(e);
+    }
+  }
+
+  async borrarUsuario(req, res, next) {
+    let correo = req.params.correo;
+
+    const usuario = await this.#usuarioSercive.findByCorreo(correo);
+    if (!usuario) {
+      res.send({ mensaje: "Erro: Usuario no encontradooooooooooooooo" });
+    } else {
+      await this.#usuarioSercive.delete(usuario._id);
+    }
+  }
 }
 
-const controller = new UsuarioController(new UsuarioService(), new CarritoService());
+const controller = new UsuarioController(
+  new UsuarioService(),
+  new CarritoService()
+);
 export default controller;
