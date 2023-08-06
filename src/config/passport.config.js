@@ -74,7 +74,6 @@ export function configurePassport() {
           });
           return done(null, user);
         } catch (e) {
-          console.log(e);
           done(e);
         }
       }

@@ -558,3 +558,52 @@
 {"level":"info","message":{"__v":0,"_id":"64bd81660176bebb81e67138","apellido":"Admin","cartId":"64bd81660176bebb81e67136","correo":"admin@admin.com","edad":20,"lastLogin":"2023-08-06T18:48:27.408Z","nombre":"Admin","password":"$2b$10$tdtEk0UATBXvFmy0t1msYeZfpvy2ry43bJGOEIbvfKmOWvMQTS4P6","role":"admin","tipoUsuario":"premium"}}
 {"level":"info","message":{"__v":0,"_id":"64bd81660176bebb81e67138","apellido":"Admin","cartId":"64bd81660176bebb81e67136","correo":"admin@admin.com","edad":20,"lastLogin":"2023-08-06T18:49:07.592Z","nombre":"Admin","password":"$2b$10$tdtEk0UATBXvFmy0t1msYeZfpvy2ry43bJGOEIbvfKmOWvMQTS4P6","role":"admin","tipoUsuario":"premium"}}
 {"level":"info","message":{"__v":0,"_id":"64bd81660176bebb81e67138","apellido":"Admin","cartId":"64bd81660176bebb81e67136","correo":"admin@admin.com","edad":20,"lastLogin":"2023-08-06T18:49:55.510Z","nombre":"Admin","password":"$2b$10$tdtEk0UATBXvFmy0t1msYeZfpvy2ry43bJGOEIbvfKmOWvMQTS4P6","role":"admin","tipoUsuario":"premium"}}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":{"__v":0,"_id":"64bd81660176bebb81e67138","apellido":"Admin","cartId":"64bd81660176bebb81e67136","correo":"admin@admin.com","edad":20,"lastLogin":"2023-08-06T18:58:34.555Z","nombre":"Admin","password":"$2b$10$tdtEk0UATBXvFmy0t1msYeZfpvy2ry43bJGOEIbvfKmOWvMQTS4P6","role":"admin","tipoUsuario":"premium"}}
+{"level":"info","message":{"__v":0,"_id":"64bd81660176bebb81e67138","apellido":"Admin","cartId":"64bd81660176bebb81e67136","correo":"admin@admin.com","edad":20,"lastLogin":"2023-08-06T20:57:20.869Z","nombre":"Admin","password":"$2b$10$tdtEk0UATBXvFmy0t1msYeZfpvy2ry43bJGOEIbvfKmOWvMQTS4P6","role":"admin","tipoUsuario":"premium"}}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":{"__v":0,"_id":"64d0128d6d28c3a256210f0e","apellido":"allamano","cartId":"64d0128d6d28c3a256210f0c","correo":"alexisallamano@hotmail.com","edad":24,"lastLogin":"2023-08-06T21:37:17.795Z","nombre":"alexis","password":"$2b$10$rmC7q2UvgEPvIB3KZKsd1eWnYQ.RMmFimtXTKc6zySlcAQnNkYdz2","role":"user","tipoUsuario":"normal"}}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":{"accepted":["alexisallamano@hotmail.com"],"ehlo":["SIZE 35882577","8BITMIME","AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH","ENHANCEDSTATUSCODES","PIPELINING","CHUNKING","SMTPUTF8"],"envelope":{"from":"proyecto@coderhouse.com","to":["alexisallamano@hotmail.com"]},"envelopeTime":759,"messageId":"<62ed2e98-b9d5-2025-2e66-ccc1802939e6@coderhouse.com>","messageSize":670,"messageTime":768,"rejected":[],"response":"250 2.0.0 OK  1691358400 l14-20020a9d6a8e000000b006b9e81d94a7sm4184219otq.70 - gsmtp"}}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":{"accepted":["alexisallamano@hotmail.com"],"ehlo":["SIZE 35882577","8BITMIME","AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH","ENHANCEDSTATUSCODES","PIPELINING","CHUNKING","SMTPUTF8"],"envelope":{"from":"proyecto@coderhouse.com","to":["alexisallamano@hotmail.com"]},"envelopeTime":601,"messageId":"<7dcc67eb-59e2-d810-a988-064ef3e2a730@coderhouse.com>","messageSize":670,"messageTime":622,"rejected":[],"response":"250 2.0.0 OK  1691358847 a10-20020a056808120a00b003a76b1b2862sm4057717oil.16 - gsmtp"}}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":{"accepted":["alexisallamano@hotmail.com"],"ehlo":["SIZE 35882577","8BITMIME","AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH","ENHANCEDSTATUSCODES","PIPELINING","CHUNKING","SMTPUTF8"],"envelope":{"from":"proyecto@coderhouse.com","to":["alexisallamano@hotmail.com"]},"envelopeTime":507,"messageId":"<501ab6f9-d62a-c0df-0d06-9384f408c54b@coderhouse.com>","messageSize":721,"messageTime":603,"rejected":[],"response":"250 2.0.0 OK  1691359092 dt41-20020a0568705aa900b001bf53b6633dsm4290390oab.36 - gsmtp"}}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":{"accepted":["alexisallamano@hotmail.com"],"ehlo":["SIZE 35882577","8BITMIME","AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH","ENHANCEDSTATUSCODES","PIPELINING","CHUNKING","SMTPUTF8"],"envelope":{"from":"proyecto@coderhouse.com","to":["alexisallamano@hotmail.com"]},"envelopeTime":587,"messageId":"<7e44566b-7cce-fe5b-3605-9565dc29d1e0@coderhouse.com>","messageSize":721,"messageTime":652,"rejected":[],"response":"250 2.0.0 OK  1691359277 a22-20020a056808129600b003a78d196acasm2069050oiw.32 - gsmtp"}}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":{"__v":0,"_id":"64d0128d6d28c3a256210f0e","apellido":"allamano","cartId":"64d0128d6d28c3a256210f0c","correo":"alexisallamano@hotmail.com","edad":24,"lastLogin":"2023-08-06T21:37:17.795Z","nombre":"alexis","password":"$2b$10$.ef8D0tiC4xy3Q/lq1Hjr.F2Y7cB2kgb.a0Br01nMiHxoWad6Iuy2","role":"user","tipoUsuario":"normal"}}
+{"level":"info","message":{"__v":0,"_id":"64d0128d6d28c3a256210f0e","apellido":"allamano","cartId":"64d0128d6d28c3a256210f0c","correo":"alexisallamano@hotmail.com","edad":24,"lastLogin":"2023-08-06T21:37:17.795Z","nombre":"alexis","password":"$2b$10$.ef8D0tiC4xy3Q/lq1Hjr.F2Y7cB2kgb.a0Br01nMiHxoWad6Iuy2","role":"user","tipoUsuario":"normal"}}
+{"level":"info","message":null}

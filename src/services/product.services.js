@@ -55,18 +55,12 @@ class ProductoService {
       })
       .then((info) => {
         logger.info(info, "Correo enviado");
-        console.log(`CORREO ENVIADO A ${correo}`);
       })
       .catch((error) => {
         logger.error(error);
-        console.log(error);
       });
   }
 
-  prueba(correo, descripcion) {
-    console.log(correo);
-    console.log(descripcion);
-  }
 }
 
 export default ProductoService;

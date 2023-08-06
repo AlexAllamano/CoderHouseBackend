@@ -105,7 +105,6 @@ class UsuarioController {
           .send({ mensaje: "No se encontraron usuarios inactivos" });
       }
     } catch (e) {
-      console.log(e);
       next(e);
     }
   }

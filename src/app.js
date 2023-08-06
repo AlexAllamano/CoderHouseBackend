@@ -53,6 +53,10 @@ app.use(
   express.static(__dirname + "/public", { type: "application/javascript" })
 );
 app.use(
+  "/api/auth/password-olvidada/static",
+  express.static(__dirname + "/public", { type: "application/javascript" })
+);
+app.use(
   "/api/static",
   express.static(__dirname + "/public", { type: "application/javascript" })
 );
@@ -109,9 +113,6 @@ app.get("/session", (req, res) => {
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (!err) {
-
-      console.log('LOGOUT')
-
       res.clearCookie('AUTH') // clear cookie "AUTH"
 
       res.render("home");

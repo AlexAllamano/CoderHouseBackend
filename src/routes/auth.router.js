@@ -1,10 +1,12 @@
-import userModel from "../models/usuario.model.js";
-import { createHash, isValidPassword } from "../utils/crypto.js";
+import jwt from "jsonwebtoken";
 import passport from "passport";
 import { Router } from "../classes/server/router.js";
 import logger from "../classes/logs/winston-logger.js";
 import jwtController from "../controllers/jwt.controller.js";
-
+import UsuarioService from "../services/usuarios.services.js";
+import config from "./../data.js";
+import nodemailer from "nodemailer";
+import { createHash } from "../utils/crypto.js";
 class AuthRouter extends Router {
   constructor() {
     super("/auth");
@@ -40,42 +42,137 @@ class AuthRouter extends Router {
     );
 
     this.get("/registrofallido", ["PUBLIC"], (req, res) => {
-      res.render("noEncontrado",{
+      res.render("noEncontrado", {
         title: "Registro Fallido",
         mensaje: "Por favor, volver a intenar",
-        login: true
-      })
+        login: true,
+      });
     });
 
     this.get("/loginfallido", ["PUBLIC"], (req, res) => {
-      res.render("noEncontrado",{
+      res.render("noEncontrado", {
         title: "Login Fallido",
         mensaje: "Usuario o contraseña incorrectas",
-        login: true
-      })
+        login: true,
+      });
     });
 
-    this.post("/password-olvidada", ["PUBLIC"], async (req, res) => {
+    this.get("/password-olvidada/:token", ["PUBLIC"], async (req, res) => {
       try {
-        const { correo, password } = req.body;
-        const usuario = await userModel.findOne({ correo });
-        const hashedPassword = createHash(password);
-        if (!usuario) {
+        const token = req.params.token;
+
+
+        if (!token) {
           res.render("noEncontrado", {
-            title: "Usuario no encontrado",
-            mensaje: "Error: Usuario no encontrado",
-            login: false
+            title: "Error de autentificación",
+            mensaje: "Vuelva al inicio",
+            login: true,
           });
-          return;
+        } else {
+          const correo = jwt.verify(token, config.SECRET);
+
+
+          if (!correo.email) {
+            res.render("noEncontrado", {
+              title: "Error de autentificación",
+              mensaje: "Vuelva al inicio",
+              login: true,
+            });
+          } else {
+            res.render("recuperarPass", {});
+          }
         }
-        await userModel.updateOne(
-          { correo },
-          { $set: { password: hashedPassword } }
-        );
-        res.send({ mensjae: "Constraseña modificada" });
       } catch (e) {}
     });
 
+    this.get("/recuperarPass/:correo", ["PUBLIC"], async (req, res) => {
+      const correo = req.params.correo;
+
+      const us = new UsuarioService();
+
+      try {
+        const usuario = await us.findByCorreo(correo);
+
+        if (!usuario) {
+          res.render("noEncontrado", {
+            title: "Usuario no encontrado",
+            mensaje: "No hay usuario con el correo especificado",
+            login: true,
+          });
+        } else {
+          const token = jwt.sign({ email: correo }, config.SECRET, {
+            expiresIn: "24h",
+          });
+
+          const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            auth: {
+              user: "alexallamano@gmail.com",
+              pass: config.CLAVE_GMAIL,
+            },
+          });
+
+          transporter
+            .sendMail({
+              from: "'CoderHouse Backend' <proyecto@coderhouse.com>",
+              to: correo,
+              subject: "Recuperar contraseña",
+              html: `
+              <h2>Para recuperar su contraseña haga clic <a href="coderhousebackend-production-b304.up.railway.app/api/auth/password-olvidada/${token}">aquí</a></h2>
+            `,
+            })
+            .then((info) => {
+              logger.info(info, "Correo enviado");
+            })
+            .catch((error) => {
+              logger.error(error);
+            });
+        }
+      } catch (error) {
+      }
+    });
+
+    this.put(
+      "/modificarClave/:token/:nuevaClave",
+      ["PUBLIC"],
+      async (req, res) => {
+        const us = new UsuarioService();
+        const nuevaClave = req.params.nuevaClave
+        const token = req.params.token
+        const correo = jwt.verify(token, config.SECRET);
+
+     
+
+        if (!correo) {
+          res.render("noEncontrado", {
+            title: "Error de autentificación",
+            mensaje: "Vuelva al inicio",
+            login: false,
+          });
+        } else {
+          const usuario = await us.findByCorreo( correo.email );
+          const hashedPassword = createHash(nuevaClave);
+
+          if (!usuario) {
+            res.render("noEncontrado", {
+              title: "Usuario no encontrado",
+              mensaje: "Error: Usuario no encontrado",
+              login: false,
+            });
+          }
+          await us.update(
+             usuario._id ,
+            { $set: { password: hashedPassword } }
+          );
+          res.render("noEncontrado", {
+            title: "Clave actualizada",
+            mensaje: "Cambio de clave exitoso",
+            login: false,
+          });
+        }
+      }
+    );
 
     this.get(
       "/github",

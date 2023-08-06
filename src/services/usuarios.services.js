@@ -36,7 +36,6 @@ class UsuarioService {
   }
 
   async delete(id) {
-    console.log(`borrando a ${id}`)
 
     await this.#model.findByIdAndDelete(id);
   }
@@ -76,7 +75,6 @@ class UsuarioService {
       })
       .then((info) => {
         logger.info(info, "Correo enviado");
-        console.log(`CORREO ENVIADO A ${correo}`);
       })
       .catch((error) => logger.error(error));
   }

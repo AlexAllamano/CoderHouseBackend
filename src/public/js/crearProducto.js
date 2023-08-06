@@ -37,7 +37,6 @@ async function crearProducto(event) {
         }
       })
       .catch((e) => {
-        console.log(e);
       });
   }
 }

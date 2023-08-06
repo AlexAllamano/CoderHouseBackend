@@ -28,7 +28,6 @@ class ViewsController {
       { page: page, limit: limite, lean: true, sort: { price: sort } }
     );
 
-    console.log('ALGO')
 
     res.render("registro", { title: "Registro", products });
   }
@@ -54,7 +53,7 @@ class ViewsController {
 
     usuario = await usuarioModel.findOne({ correo });
 
-    if(usuario){
+    if (usuario) {
       const products = await productoModel.paginate(
         {},
         {
@@ -63,18 +62,18 @@ class ViewsController {
           lean: true,
         }
       );
-  
+
       if (query.page > products.totalPages || query.page <= 0) {
         res.render("noEncontrado", {
           title: "Página no encontrada",
           mensaje: `La página ingresada no existe para el límite asignado`,
-          login: false
+          login: false,
         });
       } else if (query.limite > products.totalDocs || query.limite <= 0) {
         res.render("noEncontrado", {
           title: "Página no encontrada",
           mensaje: `Está intenando mostrar un número superior o inferior a la cantidad de documentos disponibles`,
-          login: false
+          login: false,
         });
       } else {
         const carritoId = usuario.cartId.toString();
@@ -95,15 +94,13 @@ class ViewsController {
           idUsuario,
         });
       }
-    }else{
+    } else {
       res.render("noEncontrado", {
         title: "Usuario no encontrado",
         mensaje: "Error: Usuario no encontrado",
-        login: false
+        login: false,
       });
     }
-
-    
   }
 
   async getCartById(req, res, next) {
@@ -120,8 +117,6 @@ class ViewsController {
         mensaje: `El carrito con el id ${cid} no existe`,
       });
     } else {
-
-
       res.render("carritos", {
         title: "Carrito",
         cid: cid,
@@ -137,8 +132,6 @@ class ViewsController {
   async getListaUsuarios(req, res, next) {
     const listaUsuarios = await usuarioModel.find();
 
-    console.log(listaUsuarios)
-
     const usuariosFianl = listaUsuarios.map((usuario) => {
       const { nombre, apellido, correo, role, tipoUsuario } = usuario;
       return { nombre, apellido, correo, role, tipoUsuario };
@@ -148,8 +141,11 @@ class ViewsController {
   }
 
   async getCrearProducto(req, res, next) {
-
     res.render("crearProducto", { usuario: req.session.correo });
+  }
+
+  async getRecuperarContrasena(req, res, next) {
+    res.render("contrasenaOlvidada", {});
   }
 }
 

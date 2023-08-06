@@ -93,11 +93,9 @@ class ProductoController {
       let pid = req.params.pid;
       let producto = await this.#productoSercive.findById(pid);
 
-      console.log(producto)
 
       if(producto.owner !== "admin"){
         let usuario = await this.#usuarioSercive.findById(producto.owner)
-        console.log(usuario)
         await this.#productoSercive.enviarCorreoProductoEliminado(usuario.correo, producto.tittle);
       }
 
@@ -111,7 +109,6 @@ class ProductoController {
       );
       res.status(200);
     } catch (e) {
-      console.log(e)
       logger.error("Error al borrar el producto", e);
       next(e);
     }

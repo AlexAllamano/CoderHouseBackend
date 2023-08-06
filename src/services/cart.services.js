@@ -1,8 +1,7 @@
 import data from "../data.js";
 import nodemailer from 'nodemailer';
-import carritoModel from "../models/cart.model.js";
 import logger from "../classes/logs/winston-logger.js";
-
+import carritoModel from "../models/cart.model.js";
 class CarritoService {
   #model;
   constructor() {
@@ -35,7 +34,6 @@ class CarritoService {
   }
 
   async delete(id) {
-    console.log(id, 'Borrando carrito')
     await this.#model.findByIdAndDelete(id);
   }
 

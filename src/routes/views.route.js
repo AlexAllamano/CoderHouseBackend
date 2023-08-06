@@ -15,6 +15,7 @@ class ViewsRouter extends Router{
         this.get("/chat",["PUBLIC"], viewsController.getChats.bind(viewsController));
         this.get("/listaUsuarios",["ADMIN"], viewsController.getListaUsuarios.bind(viewsController));
         this.get("/crearProducto",["ADMIN","PREMIUM"], viewsController.getCrearProducto.bind(viewsController));
+        this.get("/recuperarContrasena",["PUBLIC"], viewsController.getRecuperarContrasena.bind(viewsController));
     }
     
 }

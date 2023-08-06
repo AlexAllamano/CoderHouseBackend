@@ -19,7 +19,6 @@ const api = {
   },
   get: async (url) => {
 
-    console.log(url)
 
     const response = await fetch(url, {
       method: "GET",

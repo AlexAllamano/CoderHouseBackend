@@ -61,7 +61,6 @@ async function logout(event) {
 comprar = async (element) => {
   const cartId = element.getAttribute("cart-id");
 
-  console.log(cartId);
 
   await fetch(`api/cart/${cartId}/comprar`, {
     method: "POST",
@@ -128,8 +127,8 @@ async function borrarusuariosInactivos() {
   });
 }
 
+
 async function verCarrito(element) {
   let cid = element.getAttribute("cart-id");
-  console.log(cid);
   window.location.href = `/api/carts/${cid}`;
 }
