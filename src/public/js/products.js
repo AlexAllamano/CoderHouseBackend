@@ -44,8 +44,7 @@ filtrar = () => {
 agregarCarrito = async (element) => {
   const id = element.getAttribute("data-id");
   const cartId = document.getElementById("user-data").getAttribute("data-user");
-
-  await api.post(`api/cart/${cartId}/product/${id}`);
+  await api.post(`cart/${cartId}/product/${id}`);
 
   alert("Producto agregado");
 };
@@ -60,9 +59,10 @@ async function logout(event) {
 
 comprar = async (element) => {
   const cartId = element.getAttribute("cart-id");
-
-
-  await fetch(`api/cart/${cartId}/comprar`, {
+  const currentUrl = window.location.href;
+  const parsedUrl = new URL(currentUrl);
+  console.log(parsedUrl.origin)
+  await fetch(`${origin}/api/cart/${cartId}/comprar`, {
     method: "POST",
   }).then((response) => {
     if (response.status == 201) {

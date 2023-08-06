@@ -607,3 +607,6 @@
 {"level":"info","message":{"__v":0,"_id":"64d0128d6d28c3a256210f0e","apellido":"allamano","cartId":"64d0128d6d28c3a256210f0c","correo":"alexisallamano@hotmail.com","edad":24,"lastLogin":"2023-08-06T21:37:17.795Z","nombre":"alexis","password":"$2b$10$.ef8D0tiC4xy3Q/lq1Hjr.F2Y7cB2kgb.a0Br01nMiHxoWad6Iuy2","role":"user","tipoUsuario":"normal"}}
 {"level":"info","message":{"__v":0,"_id":"64d0128d6d28c3a256210f0e","apellido":"allamano","cartId":"64d0128d6d28c3a256210f0c","correo":"alexisallamano@hotmail.com","edad":24,"lastLogin":"2023-08-06T21:37:17.795Z","nombre":"alexis","password":"$2b$10$.ef8D0tiC4xy3Q/lq1Hjr.F2Y7cB2kgb.a0Br01nMiHxoWad6Iuy2","role":"user","tipoUsuario":"normal"}}
 {"level":"info","message":null}
+{"level":"info","message":"Escuchando server"}
+{"level":"info","message":{"__v":0,"_id":"64d0128d6d28c3a256210f0e","apellido":"allamano","cartId":"64d0128d6d28c3a256210f0c","correo":"alexisallamano@hotmail.com","edad":24,"lastLogin":"2023-08-06T23:08:30.493Z","nombre":"alexis","password":"$2b$10$6cE2K5NP3witFnyVImIj0.sbA5jWCPYEZyn2loQyeLvF8ncUZntsi","role":"user","tipoUsuario":"normal"}}
+{"level":"info","message":"Escuchando server"}

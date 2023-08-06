@@ -55,6 +55,9 @@ class CartController {
       const cid = req.params.cid;
       const pid = req.params.pid;
 
+      console.log(cid)
+      console.log(pid)
+
       //busco producto y carrito por id
       const producto = await this.#productoService.findById(pid);
       let carrito = await this.#carritoService.findOne({ _id: cid });
