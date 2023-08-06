@@ -36,6 +36,8 @@ class UsuarioService {
   }
 
   async delete(id) {
+    console.log(`borrando a ${id}`)
+
     await this.#model.findByIdAndDelete(id);
   }
 
@@ -44,9 +46,7 @@ class UsuarioService {
   }
 
   async getUsuariosInactivos() {
-    const dosDiasAtras = new Date();
-    console.log(dosDiasAtras);
-
+    const dosDiasAtras = new Date().getDate() - 2;
     return await this.#model.find({ lastLogin: { $lt: dosDiasAtras } });
   }
 

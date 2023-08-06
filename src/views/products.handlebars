@@ -55,7 +55,6 @@
         <th scope="col">Precio</th>
         <th scope="col">Código</th>
         <th scope="col">Stock</th>
-        <th scope="col">Estado</th>
         <th scope="col">Acciones</th>
         
       </tr>
@@ -66,24 +65,25 @@
           <th scope="row">{{this._id}}</th>
           <td>{{this.tittle}}</td>
           <td>{{this.description}}</td>
-          <td>{{this.price}}</td>
+          <td>${{this.price}}</td>
           <td>{{this.code}}</td>
           <td>{{this.stock}}</td>
-          <td>{{this.status}}</td>
           <td>
-            {{#if (gt this.stock)}}
-              <button
-                class="btn btn-primary"
-                onclick="agregarCarrito(this)"
-                data-id="{{this._id}}"
-              >Agregar</button>
-            {{else}}
-              <button class="btn btn-danger disabled">Sin stock</button>
+            {{#if (noEsAdmin ../rolUsuario)}}
+              {{#if (gt this.stock)}}
+                <button
+                  class="btn btn-primary"
+                  onclick="agregarCarrito(this)"
+                  data-id="{{this._id}}"
+                >Agregar</button>
+              {{else}}
+                <button class="btn btn-danger disabled">Sin stock</button>
+              {{/if}}
             {{/if}}
             {{#if (verificarAdmin ../rolUsuario)}}
             <button
                 class="btn btn-danger"
-                onclick="agregarCarrito(this)"
+                onclick="borrarProducto(this)"
                 data-id="{{this._id}}"
               >Borrar</button>    
             {{/if}}
@@ -91,7 +91,7 @@
             {{#if (verificarPremium ../rolUsuario ../idUsuario this.owner)}}
             <button
                 class="btn btn-danger"
-                onclick="agregarCarrito(this)"
+                onclick="borrarProducto(this)"
                 data-id="{{this._id}}"
               >Borrar</button>    
             {{/if}}
@@ -138,10 +138,11 @@
     </nav>
   </div>
   
-  <div class="d-flex justify-content-center">
-    <button class="btn btn-success" onclick="comprar()">Comprar</button>
-
-  </div>
+  {{#if (noEsAdmin rolUsuario)}}
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-success" onclick="verCarrito(this)" cart-id="{{cartId}}">Ver carrito</button>
+    </div>
+  {{/if}}
 
   {{#if (verificarAdmin rolUsuario)}}
     <div class="container mt-4">

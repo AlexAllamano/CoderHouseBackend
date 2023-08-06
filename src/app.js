@@ -17,7 +17,7 @@ import MockingService from "./classes/mocks/moks.js";
 import logger from "./classes/logs/winston-logger.js";
 import spec from "./docs/swagger-options.js";
 import swaggerUi from "swagger-ui-express";
-import EventEmmitter from 'events'
+import EventEmmitter from "events";
 
 const { __dirname } = fileDirName(import.meta);
 const app = express();
@@ -46,12 +46,20 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
 //ARCHIVOS ESTÁTICOS
 
-app.use("/api/static", express.static(__dirname + "/public", { type: "application/javascript" }));
-app.use("/static", express.static(__dirname + "/public", { type: "application/javascript" }));
+app.use(
+  "/api/carts/static",
+  express.static(__dirname + "/public", { type: "application/javascript" })
+);
+app.use(
+  "/api/static",
+  express.static(__dirname + "/public", { type: "application/javascript" })
+);
+app.use(
+  "/static",
+  express.static(__dirname + "/public", { type: "application/javascript" })
+);
 
 // ROUTES
 
@@ -88,8 +96,6 @@ app.get("/loggerTest", (req, res, next) => {
   }
 });
 
-
-
 app.get("/session", (req, res) => {
   if (req.session.counter) {
     req.session.counter++;
@@ -113,30 +119,28 @@ app.get("/logout", (req, res) => {
 // HANDLEBARS
 
 const hbs = handlebars.create({
-  helpers:{
-    gt: function(value){
+  helpers: {
+    gt: function (value) {
       return value > 0;
     },
-    verificarAdmin: function(value){
-      return value.toLowerCase() =="admin";
+    verificarAdmin: function (value) {
+      return value.toLowerCase() == "admin";
     },
-    verificarPremium: function(role, idUsuario, productOwnerId){
-      if(role.toLowerCase() =="admin"){
-        return false
+    verificarPremium: function (role, idUsuario, productOwnerId) {
+      if (role.toLowerCase() == "admin") {
+        return false;
       }
-
       return idUsuario == productOwnerId;
-    }
-  }
-})
+    },
+    noEsAdmin: function (role) {
+      return role.toLowerCase() !== "admin";
+    },
+  },
+});
 
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
-
-
-
-
 
 // MONGOOSE
 

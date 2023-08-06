@@ -35,6 +35,7 @@ class CarritoService {
   }
 
   async delete(id) {
+    console.log(id, 'Borrando carrito')
     await this.#model.findByIdAndDelete(id);
   }
 

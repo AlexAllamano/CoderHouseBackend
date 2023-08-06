@@ -56,14 +56,20 @@ function logout(event) {
   event.preventDefault();
 }
 
-comprar = async () => {
-  const cartId = document.getElementById("user-data").getAttribute("data-user");
+comprar = async (element) => {
+  const cartId = element.getAttribute("cart-id");
+
+  console.log(cartId);
 
   await fetch(`http://localhost:8080/api/cart/${cartId}/comprar`, {
     method: "POST",
-  });
+  }).then((response) => {
+    if (response.status == 201) {
+      alert("Compra realizada... enviando email");
 
-  alert("Compra realizada... enviando email");
+      location.reload();
+    }
+  });
 };
 
 async function verListaUsuarios() {
@@ -72,6 +78,18 @@ async function verListaUsuarios() {
 
 async function crearProducto() {
   window.location.href = "http://localhost:8080/api/crearProducto";
+}
+
+async function borrarProducto(element) {
+  const id = element.getAttribute("data-id");
+
+  await fetch(`http://localhost:8080/api/product/${id}`, {
+    method: "DELETE",
+  }).then((respuesta) => {
+    if (respuesta.status == 200) {
+      location.reload();
+    }
+  });
 }
 
 async function cambiarRole(element) {
@@ -108,3 +126,8 @@ async function borrarusuariosInactivos() {
   });
 }
 
+async function verCarrito(element) {
+  let cid = element.getAttribute("cart-id");
+  console.log(cid);
+  window.location.href = `http://localhost:8080/api/carts/${cid}`;
+}

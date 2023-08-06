@@ -40,11 +40,19 @@ class AuthRouter extends Router {
     );
 
     this.get("/registrofallido", ["PUBLIC"], (req, res) => {
-      res.send({ error: "Error en el registro" });
+      res.render("noEncontrado",{
+        title: "Registro Fallido",
+        mensaje: "Por favor, volver a intenar",
+        login: true
+      })
     });
 
     this.get("/loginfallido", ["PUBLIC"], (req, res) => {
-      res.send({ error: "Error en el login: usuario o contraseña incorrecta" });
+      res.render("noEncontrado",{
+        title: "Login Fallido",
+        mensaje: "Usuario o contraseña incorrectas",
+        login: true
+      })
     });
 
     this.post("/password-olvidada", ["PUBLIC"], async (req, res) => {

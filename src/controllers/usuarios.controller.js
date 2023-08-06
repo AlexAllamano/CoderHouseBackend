@@ -81,14 +81,12 @@ class UsuarioController {
 
   async borrarInactivos(req, res, next) {
     try {
-      console.log("VAMOS A BORRAR USUARIOS");
       let usuariosInactivos = await this.#usuarioSercive.getUsuariosInactivos();
 
       usuariosInactivos = usuariosInactivos.filter(
         (item) => item.nombre !== "Admin"
       );
 
-      console.log(usuariosInactivos);
 
       if (usuariosInactivos.length > 0) {
         for (const usuario of usuariosInactivos) {
@@ -113,9 +111,11 @@ class UsuarioController {
 
     const usuario = await this.#usuarioSercive.findByCorreo(correo);
     if (!usuario) {
-      res.send({ mensaje: "Erro: Usuario no encontradooooooooooooooo" });
+      res.send({ mensaje: "Erro: Usuario no encontrado" });
     } else {
       await this.#usuarioSercive.delete(usuario._id);
+      await this.#carritoSercive.delete(usuario.cartId);
+      res.status(200).send({mensaje: "Usuario borrado"})
     }
   }
 }

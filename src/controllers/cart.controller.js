@@ -316,6 +316,7 @@ class CartController {
 
         await this.#carritoService.enviarTicketEmail(comprador)
     } catch (error) {
+      console.log(error)
       next(error);
     }
   }

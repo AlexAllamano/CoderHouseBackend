@@ -91,6 +91,16 @@ class ProductoController {
   async borrarProducto(req, res, next) {
     try {
       let pid = req.params.pid;
+      let producto = await this.#productoSercive.findById(pid);
+
+      console.log(producto)
+
+      if(producto.owner !== "admin"){
+        let usuario = await this.#usuarioSercive.findById(producto.owner)
+        console.log(usuario)
+        await this.#productoSercive.enviarCorreoProductoEliminado(usuario.correo, producto.tittle);
+      }
+
       let result = await this.#productoSercive.delete({ _id: pid });
       socketServer.emit(
         "mensajeDelete",
@@ -99,8 +109,9 @@ class ProductoController {
           { page: page, limit: limite, lean: true, sort: { price: sort } }
         )
       );
-      res.status(200).send(result);
+      res.status(200);
     } catch (e) {
+      console.log(e)
       logger.error("Error al borrar el producto", e);
       next(e);
     }
