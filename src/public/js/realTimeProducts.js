@@ -12,7 +12,7 @@ socket.on("mensajeDelete", (data) => {
   actualizarTabla(data);
 });
 
-const url = "http://localhost:8080/api/product";
+const url = "/api/product";
 
 postProduct = () => {
   event.preventDefault(true);

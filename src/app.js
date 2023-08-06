@@ -109,7 +109,12 @@ app.get("/session", (req, res) => {
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (!err) {
-      res.send("Logout ok");
+
+      console.log('LOGOUT')
+
+      res.clearCookie('AUTH') // clear cookie "AUTH"
+
+      res.render("home");
     } else {
       res.send({ status: "Logout Error", body: err });
     }

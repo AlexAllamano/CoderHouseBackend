@@ -5,5 +5,13 @@ async function login(event) {
   const correo = document.getElementById("correo").value;
 
   const response = await api.post('/api/auth/login', {correo, password});
-  console.log(response)
+}
+
+async function registro(event){
+  event.preventDefault();
+
+    window.location.href = '/registro';
+
+
+
 }

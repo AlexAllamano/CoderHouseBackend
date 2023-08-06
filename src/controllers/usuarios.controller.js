@@ -68,7 +68,11 @@ class UsuarioController {
     let nuevoRole = "";
 
     if (!usuario) {
-      res.send({ mensaje: "Erro: Usuario no encontrado" });
+      res.render("noEncontrado", {
+        title: "Usuario no encontrado",
+        mensaje: "Error: Usuario no encontrado",
+        login: false
+      });
     } else {
       nuevoRole = usuario.tipoUsuario === "normal" ? "premium" : "normal";
       usuario.tipoUsuario = nuevoRole;
@@ -111,7 +115,11 @@ class UsuarioController {
 
     const usuario = await this.#usuarioSercive.findByCorreo(correo);
     if (!usuario) {
-      res.send({ mensaje: "Erro: Usuario no encontrado" });
+      res.render("noEncontrado", {
+        title: "Usuario no encontrado",
+        mensaje: "Error: Usuario no encontrado",
+        login: false
+      });
     } else {
       await this.#usuarioSercive.delete(usuario._id);
       await this.#carritoSercive.delete(usuario.cartId);

@@ -21,7 +21,7 @@ async function crearProducto(event) {
     return;
   } else {
     await api
-      .post(`http://localhost:8080/api/product`, {
+      .post(`/api/product`, {
         tittle: nombre,
         description: descripcion,
         price: precio,

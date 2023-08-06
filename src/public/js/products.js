@@ -45,15 +45,17 @@ agregarCarrito = async (element) => {
   const id = element.getAttribute("data-id");
   const cartId = document.getElementById("user-data").getAttribute("data-user");
 
-  await fetch(`http://localhost:8080/api/cart/${cartId}/product/${id}`, {
-    method: "POST",
-  });
+  await api.post(`api/cart/${cartId}/product/${id}`);
 
   alert("Producto agregado");
 };
 
-function logout(event) {
+async function logout(event) {
   event.preventDefault();
+
+  await fetch("/logout", { method: "GET" }).then(res =>{
+    window.location.href = `/`
+  });
 }
 
 comprar = async (element) => {
@@ -61,7 +63,7 @@ comprar = async (element) => {
 
   console.log(cartId);
 
-  await fetch(`http://localhost:8080/api/cart/${cartId}/comprar`, {
+  await fetch(`api/cart/${cartId}/comprar`, {
     method: "POST",
   }).then((response) => {
     if (response.status == 201) {
@@ -73,17 +75,17 @@ comprar = async (element) => {
 };
 
 async function verListaUsuarios() {
-  window.location.href = "http://localhost:8080/api/listaUsuarios";
+  window.location.href = `/listaUsuarios`;
 }
 
 async function crearProducto() {
-  window.location.href = "http://localhost:8080/api/crearProducto";
+  window.location.href = "/api/crearProducto";
 }
 
 async function borrarProducto(element) {
   const id = element.getAttribute("data-id");
 
-  await fetch(`http://localhost:8080/api/product/${id}`, {
+  await fetch(`/api/product/${id}`, {
     method: "DELETE",
   }).then((respuesta) => {
     if (respuesta.status == 200) {
@@ -95,7 +97,7 @@ async function borrarProducto(element) {
 async function cambiarRole(element) {
   const correo = element.getAttribute("correo");
 
-  await fetch(`http://localhost:8080/api/usuarios/cambiarRole/${correo}`, {
+  await fetch(`/api/usuarios/cambiarRole/${correo}`, {
     method: "PUT",
   }).then((data) => {
     if (data.status == 200) {
@@ -109,7 +111,7 @@ async function cambiarRole(element) {
 async function borrarUsuario(element) {
   const correo = element.getAttribute("correo");
 
-  await fetch(`http://localhost:8080/api/usuarios/${correo}`, {
+  await fetch(`/api/usuarios/${correo}`, {
     method: "DELETE",
   }).then((data) => {
     alert("Usuario borrado");
@@ -118,7 +120,7 @@ async function borrarUsuario(element) {
 }
 
 async function borrarusuariosInactivos() {
-  await fetch(`http://localhost:8080/api/usuarios/usuariosInactivos`, {
+  await fetch(`/api/usuarios/usuariosInactivos`, {
     method: "DELETE",
   }).then((data) => {
     alert("Usuarios borrados");
@@ -129,5 +131,5 @@ async function borrarusuariosInactivos() {
 async function verCarrito(element) {
   let cid = element.getAttribute("cart-id");
   console.log(cid);
-  window.location.href = `http://localhost:8080/api/carts/${cid}`;
+  window.location.href = `/api/carts/${cid}`;
 }

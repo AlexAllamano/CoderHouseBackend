@@ -28,6 +28,8 @@ class ViewsController {
       { page: page, limit: limite, lean: true, sort: { price: sort } }
     );
 
+    console.log('ALGO')
+
     res.render("registro", { title: "Registro", products });
   }
 
@@ -94,7 +96,11 @@ class ViewsController {
         });
       }
     }else{
-      res.status(404).send({Error: "Usuario no encontrado"})
+      res.render("noEncontrado", {
+        title: "Usuario no encontrado",
+        mensaje: "Error: Usuario no encontrado",
+        login: false
+      });
     }
 
     
@@ -130,6 +136,8 @@ class ViewsController {
 
   async getListaUsuarios(req, res, next) {
     const listaUsuarios = await usuarioModel.find();
+
+    console.log(listaUsuarios)
 
     const usuariosFianl = listaUsuarios.map((usuario) => {
       const { nombre, apellido, correo, role, tipoUsuario } = usuario;

@@ -73,7 +73,7 @@ function handlePolicies(policies) {
 
         res.cookie("AUTH", "SIN USO");
 
-        return res.redirect("http://localhost:8080/api/home");
+        return res.redirect("/api/home");
       }
 
       if (policies.includes("PUBLIC")) {
@@ -94,7 +94,11 @@ function handlePolicies(policies) {
 
       next();
     } catch (e) {
-      res.send('ERROR AL LEER TOKEN')
+      res.render("noEncontrado", {
+        title: "Error de autentificación",
+        mensaje: "Vuelva a iniciar sesión",
+        login: false
+      });
     }
   };
 }

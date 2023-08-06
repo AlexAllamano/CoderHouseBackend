@@ -58,7 +58,7 @@ class CarritoService {
         <h1>Gracias por comprar</h1>
         <h2>Estamos preparando tu compra</h2>
         <h2>Para hacer un seguimiento, puede hacerlo desde su perfil</h2>
-        <a href="http://localhost:8080/login">Ingresar</a>        
+        <a href="/login">Ingresar</a>        
       `,
       })
       .then((info) => {logger.info(info, 'Correo enviado')})

@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { expect } from "chai";
 
 describe("Test de supertest", function () {
-  const requester = supertest("http://localhost:8080");
+  const requester = supertest("");
 
   describe("Test de Productos", () => {
     let productoId = "";

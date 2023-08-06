@@ -61,7 +61,11 @@ class AuthRouter extends Router {
         const usuario = await userModel.findOne({ correo });
         const hashedPassword = createHash(password);
         if (!usuario) {
-          res.status(404).send({ mensaje: "usuario no encontrado" });
+          res.render("noEncontrado", {
+            title: "Usuario no encontrado",
+            mensaje: "Error: Usuario no encontrado",
+            login: false
+          });
           return;
         }
         await userModel.updateOne(
@@ -71,6 +75,7 @@ class AuthRouter extends Router {
         res.send({ mensjae: "Constraseña modificada" });
       } catch (e) {}
     });
+
 
     this.get(
       "/github",
