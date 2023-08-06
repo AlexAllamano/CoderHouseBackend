@@ -86,7 +86,6 @@ class UsuarioController {
   async borrarInactivos(req, res, next) {
     try {
       let usuariosInactivos = await this.#usuarioSercive.getUsuariosInactivos();
-
       usuariosInactivos = usuariosInactivos.filter(
         (item) => item.nombre !== "Admin"
       );

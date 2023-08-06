@@ -45,7 +45,10 @@ class UsuarioService {
   }
 
   async getUsuariosInactivos() {
-    const dosDiasAtras = new Date().getDate() - 2;
+    const dosDiasAtras = new Date();
+    dosDiasAtras.setDate(dosDiasAtras.getDate() - 2);
+    // dosDiasAtras.setDate(dosDiasAtras.getDate());
+  
     return await this.#model.find({ lastLogin: { $lt: dosDiasAtras } });
   }
 

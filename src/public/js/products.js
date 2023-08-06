@@ -62,7 +62,7 @@ comprar = async (element) => {
   const currentUrl = window.location.href;
   const parsedUrl = new URL(currentUrl);
   console.log(parsedUrl.origin)
-  await fetch(`${origin}/api/cart/${cartId}/comprar`, {
+  await fetch(`${parsedUrl.origin}/api/cart/${cartId}/comprar`, {
     method: "POST",
   }).then((response) => {
     if (response.status == 201) {
